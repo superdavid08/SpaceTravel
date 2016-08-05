@@ -26,7 +26,7 @@
             android:scaleType="fitXY"
             android:id="@+id/main_imageApod"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="350dp" />
 
         <TextView
             android:gravity="right"

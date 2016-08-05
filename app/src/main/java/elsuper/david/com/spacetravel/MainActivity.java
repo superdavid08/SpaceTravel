@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 //Si es imagen
                 if(response.body().getMediaType().equals("image")) {
                     imageApod.setVisibility(View.VISIBLE);
-                    imageApod.setMaxHeight(350);
                     btnVideo.setVisibility(View.INVISIBLE);
                     Picasso.with(getApplicationContext()).load(response.body().getHdurl()).into(imageApod);
                 }
