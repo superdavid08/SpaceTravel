@@ -2,10 +2,7 @@ package elsuper.david.com.spacetravel.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Andrés David García Gómez
- */
-public class APOD {
+public class Apod {
 
     @SerializedName("copyright")
     private String copyright;

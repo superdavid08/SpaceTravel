@@ -1,7 +1,6 @@
 package elsuper.david.com.spacetravel;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,74 +12,51 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import elsuper.david.com.spacetravel.data.ApodService;
 import elsuper.david.com.spacetravel.data.Data;
-import elsuper.david.com.spacetravel.model.APOD;
+import elsuper.david.com.spacetravel.model.Apod;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Created by Andrés David García Gómez
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnVideo;
-    private ImageView imageApod;
-    private TextView tvDate;
-    private TextView tvTitle;
-    private TextView tvExplanation;
-    private TextView tvCopyright;
-    private String urlVideo;
+    //2016-08-05
+    @BindView(R.id.main_imageApod) ImageView imageView;
+    @BindView(R.id.main_tvDate) TextView tvDate;
+    @BindView(R.id.main_tvTitle) TextView tvTitle;
+    @BindView(R.id.main_tvExplanation) TextView tvExplanation;
+    @BindView(R.id.main_tvCopyright) TextView tvCopyright;
+    @BindView(R.id.main_btnGoList) Button btnGoToList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Log.d("BuildConfig", BuildConfig.URL);
-
         //Acceedemos a los controles
-        btnVideo = (Button) findViewById(R.id.main_btnVideo);
-        imageApod = (ImageView)findViewById(R.id.main_imageApod);
-        tvDate = (TextView)findViewById(R.id.main_tvDate);
-        tvTitle = (TextView)findViewById(R.id.main_tvTitle);
-        tvExplanation = (TextView)findViewById(R.id.main_tvExplanation);
-        tvCopyright = (TextView)findViewById(R.id.main_tvCopyright);
+        ButterKnife.bind(this);//2016-08-05
+        Log.d("SpaceTravel", BuildConfig.URL);
+
 
         //Utilizando Retrofit
         ApodService apodService = Data.getRetrofitInstance().create(ApodService.class);
+        //Call<Apod> callApodService = apodService.getTodayApod();
+        Call<Apod> callApodService = apodService.getTodayApodWithQuery("J0U8OnXkzemf1OF32OotEIYYrdOfWyUsdGKnxjaj");
 
-        //Call<APOD> callApodService = apodService.getTodayApod();
-        Call<APOD> callApodService = apodService.getTodayApodWithQuery("J0U8OnXkzemf1OF32OotEIYYrdOfWyUsdGKnxjaj");
-
-        callApodService.enqueue(new Callback<APOD>() {
+        callApodService.enqueue(new Callback<Apod>() {
             @Override
-            public void onResponse(Call<APOD> call, Response<APOD> response) {
+            public void onResponse(Call<Apod> call, Response<Apod> response) {
+                Log.d("SpaceTravel", response.body().getTitle());
 
-                Log.d("APOD", response.body().getTitle());
+                //Asignando valores
+                if(response.body().getMediaType().equals("image"))
+                    Picasso.with(MainActivity.this).load(response.body().getHdurl()).into(imageView);
 
-                //Si es imagen
-                if(response.body().getMediaType().equals("image")) {
-                    imageApod.setVisibility(View.VISIBLE);
-                    btnVideo.setVisibility(View.INVISIBLE);
-                    Picasso.with(getApplicationContext()).load(response.body().getHdurl()).into(imageApod);
-                }
-                else{ //Si es video
-                    imageApod.setVisibility(View.INVISIBLE);
-                    btnVideo.setVisibility(View.VISIBLE);
-                    urlVideo = response.body().getUrl();
-
-                    //Manejamos su evento click para ver el video de youtube
-                    btnVideo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.setData(Uri.parse(urlVideo));
-                            getApplicationContext().startActivity(intent);
-                        }
-                    });
-                }
-
-                //Asignando los otros valores
                 tvDate.setText(response.body().getDate());
                 tvTitle.setText(response.body().getTitle());
                 tvExplanation.setText(response.body().getExplanation());
@@ -92,8 +68,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<APOD> call, Throwable t) {
+            public void onFailure(Call<Apod> call, Throwable t) {
 
+            }
+        });
+
+        btnGoToList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ListActivity.class));
             }
         });
     }

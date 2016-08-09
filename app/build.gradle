@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'android-apt' //2016-08-05
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -28,12 +30,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "URL", "\"https://api.nasa.gov\""
+            buildConfigField "String", "NASA_API_KEY", "\"J0U8OnXkzemf1OF32OotEIYYrdOfWyUsdGKnxjaj\""
             signingConfig signingConfigs.release
         }
 
         debug{
             minifyEnabled true
             buildConfigField "String", "URL", "\"https://api.nasa.gov\""
+            buildConfigField "String", "NASA_API_KEY", "\"J0U8OnXkzemf1OF32OotEIYYrdOfWyUsdGKnxjaj\""
         }
     }
 }
@@ -47,4 +51,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    //2016-08-05
+    compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
 }
