@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'android-apt' //2016-08-05
 
 android {
@@ -55,4 +54,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
+    //2016-08-06
+    compile 'com.facebook.fresco:fresco:0.12.0'
+    compile 'com.android.support:cardview-v7:23.1.1'
 }
