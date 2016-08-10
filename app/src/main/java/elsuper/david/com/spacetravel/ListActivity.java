@@ -46,10 +46,13 @@ public class ListActivity extends AppCompatActivity {
                 //Log.d("click", photo.getImgSrc());
                 //Toast.makeText(getApplicationContext(),photo.getCamera().getFullName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ListActivity.this,DetailActivity.class);
-                intent.putExtra("key_fullName", photo.getCamera().getFullName());
+                /*intent.putExtra("key_fullName", photo.getCamera().getFullName());
                 intent.putExtra("key_imgsrc", photo.getImgSrc());
                 intent.putExtra("key_earthDate", photo.getEarthDate());
-                intent.putExtra("key_cameraName", photo.getCamera().getName());
+                intent.putExtra("key_cameraName", photo.getCamera().getName());*/
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("key_photo",photo);
+                intent.putExtra("key_bundle",bundle);
                 startActivity(intent);
             }
         });

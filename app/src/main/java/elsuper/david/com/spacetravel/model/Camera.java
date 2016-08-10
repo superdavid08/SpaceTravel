@@ -3,7 +3,9 @@ package elsuper.david.com.spacetravel.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Camera {
+import java.io.Serializable;
+
+public class Camera implements Serializable{
 
     @SerializedName("id")
     private Integer id;

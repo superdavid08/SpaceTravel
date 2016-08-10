@@ -8,6 +8,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import elsuper.david.com.spacetravel.model.Photo;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -30,10 +31,19 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //Obtenemos los Extras
-        fullName = getIntent().getExtras().getString("key_fullName");
-        imgSrc = getIntent().getExtras().getString("key_imgsrc");
-        earthDate = getIntent().getExtras().getString("key_earthDate");
-        cameraName = getIntent().getExtras().getString("key_cameraName");
+        //fullName = getIntent().getExtras().getString("key_fullName");
+        //imgSrc = getIntent().getExtras().getString("key_imgsrc");
+        //earthDate = getIntent().getExtras().getString("key_earthDate");
+        //cameraName = getIntent().getExtras().getString("key_cameraName");
+
+        Bundle bundle = getIntent().getExtras().getBundle("key_bundle");
+        Photo photo = (Photo) bundle.getSerializable("key_photo");
+
+        fullName = photo.getCamera().getFullName();
+        imgSrc = photo.getImgSrc();
+        earthDate = photo.getEarthDate();
+        cameraName = photo.getCamera().getName();
+
 
         itemTitle.setText(fullName);
         itemImage.setImageURI(imgSrc);

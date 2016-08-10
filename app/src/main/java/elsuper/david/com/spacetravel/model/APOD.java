@@ -2,7 +2,9 @@ package elsuper.david.com.spacetravel.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Apod {
+import java.io.Serializable;
+
+public class Apod implements Serializable {
 
     @SerializedName("copyright")
     private String copyright;
