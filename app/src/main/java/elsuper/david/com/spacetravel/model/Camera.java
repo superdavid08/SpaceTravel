@@ -2,7 +2,6 @@
 package elsuper.david.com.spacetravel.model;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class Camera implements Serializable{
@@ -47,5 +46,4 @@ public class Camera implements Serializable{
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-
 }

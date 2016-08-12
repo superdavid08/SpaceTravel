@@ -1,7 +1,6 @@
 package elsuper.david.com.spacetravel.app;
 
 import android.app.Application;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**

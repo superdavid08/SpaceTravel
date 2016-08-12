@@ -1,5 +1,6 @@
 package elsuper.david.com.spacetravel.data;
 
+import elsuper.david.com.spacetravel.BuildConfig;
 import elsuper.david.com.spacetravel.model.Apod;
 import elsuper.david.com.spacetravel.model.MarsRovertResponse;
 import retrofit2.Call;
@@ -13,7 +14,7 @@ public interface ApodService {
 
     //Estableciendo los Endpoints
 
-    @GET("planetary/apod?api_key=J0U8OnXkzemf1OF32OotEIYYrdOfWyUsdGKnxjaj")
+    @GET("planetary/apod?api_key=" + BuildConfig.NASA_API_KEY)
     Call<Apod> getTodayApod();
 
     @GET("planetary/apod")

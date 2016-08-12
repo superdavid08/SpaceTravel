@@ -23,10 +23,10 @@ public class NasaApodViewHolder extends RecyclerView.ViewHolder{
     private Photo photo;
 
     //@BindView(R.id.item_apodImage) ImageView itemApodImage;
-    @BindView(R.id.item_apodImage)
-    SimpleDraweeView itemApodImage;
-    @BindView(R.id.item_apodTitle)
-    TextView itemApodTitle;
+    @BindView(R.id.item_sdvImage)
+    SimpleDraweeView itemImage;
+    @BindView(R.id.item_tvTitle)
+    TextView itemTitle;
 
     public NasaApodViewHolder(View itemView) {
         super(itemView);
@@ -40,7 +40,7 @@ public class NasaApodViewHolder extends RecyclerView.ViewHolder{
     }
 
     //Para manejar el click en la foto
-    @OnClick(R.id.item_apodImage)
+    @OnClick(R.id.item_sdvImage)
     public void onViewClick(View view){
         if(onItemListener != null)
             onItemListener.onItemClick(photo);

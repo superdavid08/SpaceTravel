@@ -78,5 +78,4 @@ public class Rover implements Serializable {
     public void setCameras(List<CameraSecondary> cameras) {
         this.cameras = cameras;
     }
-
 }

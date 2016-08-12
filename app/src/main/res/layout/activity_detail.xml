@@ -17,17 +17,16 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:id="@+id/detail_Image"
+            android:id="@+id/detail_sdvImage"
             android:layout_gravity="center_horizontal"
             fresco:actualImageScaleType="fitXY" />
 
         <TextView
             android:layout_gravity="bottom|center"
-            android:textSize="12pt"
+            android:textSize="@dimen/standard_textSize"
             android:layout_margin="10dp"
             android:textStyle="bold"
-            android:text="Title"
-            android:id="@+id/detail_Title"
+            android:id="@+id/detail_tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/cardview_light_background"/>
@@ -36,11 +35,10 @@
 
     <TextView
         android:layout_gravity="center_horizontal"
-        android:textSize="12pt"
+        android:textSize="@dimen/standard_textSize"
         android:layout_margin="10dp"
         android:textStyle="bold"
-        android:text="Title"
-        android:id="@+id/detail_EarthDate"
+        android:id="@+id/detail_tvEarthDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/cardview_dark_background"/>

@@ -46,6 +46,7 @@ public class ListActivity extends AppCompatActivity {
                 //Log.d("click", photo.getImgSrc());
                 //Toast.makeText(getApplicationContext(),photo.getCamera().getFullName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ListActivity.this,DetailActivity.class);
+                //El siguiente bloque se comentó porque ya no se va a pasar uno por uno sino el objeto completo
                 /*intent.putExtra("key_fullName", photo.getCamera().getFullName());
                 intent.putExtra("key_imgsrc", photo.getImgSrc());
                 intent.putExtra("key_earthDate", photo.getEarthDate());

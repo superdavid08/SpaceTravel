@@ -11,23 +11,22 @@
     <!--<ImageView
         android:layout_margin="5dp"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/item_apodImage"
+        android:id="@+id/item_ivImage"
         android:layout_width="match_parent"
         android:layout_height="250dp" />-->
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:id="@+id/item_apodImage"
+        android:id="@+id/item_sdvImage"
         android:layout_gravity="center_horizontal"
         fresco:actualImageScaleType="fitXY" />
 
     <TextView
         android:layout_gravity="bottom|center"
-        android:textSize="12pt"
+        android:textSize="@dimen/standard_textSize"
         android:layout_margin="10dp"
         android:textStyle="bold"
-        android:text="Title"
-        android:id="@+id/item_apodTitle"
+        android:id="@+id/item_tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/cardview_light_background"/>

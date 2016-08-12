@@ -15,6 +15,7 @@ import elsuper.david.com.spacetravel.model.Photo;
 public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
 
     private List<Photo> marsPhotos;
+    //interface
     private OnItemClickListener onItemClickListener;
 
     public NasaApodAdapter(){}
@@ -32,11 +33,11 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
     public void onBindViewHolder(NasaApodViewHolder holder, int position) {
         //Obtenemos el elemento por su posición y asignamos sus valores en el holder
         Photo photo = marsPhotos.get(position);
-        holder.itemApodTitle.setText(photo.getCamera().getFullName());
-        /*Picasso.with(holder.itemApodImage.getContext())
+        holder.itemTitle.setText(photo.getCamera().getFullName());
+        /*Picasso.with(holder.itemImage.getContext())
                 .load(photo.getImgSrc())
-                .into(holder.itemApodImage);*/
-        holder.itemApodImage.setImageURI(photo.getImgSrc());//2016-08-06
+                .into(holder.itemImage);*/
+        holder.itemImage.setImageURI(photo.getImgSrc());//2016-08-06
         holder.setItemClick(photo,onItemClickListener);
     }
 

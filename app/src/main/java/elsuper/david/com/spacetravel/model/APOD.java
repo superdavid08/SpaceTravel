@@ -1,7 +1,6 @@
 package elsuper.david.com.spacetravel.model;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class Apod implements Serializable {

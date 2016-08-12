@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     //2016-08-05
-    @BindView(R.id.main_imageApod) ImageView imageView;
+    @BindView(R.id.main_imgApod) ImageView imageView;
     @BindView(R.id.main_tvDate) TextView tvDate;
     @BindView(R.id.main_tvTitle) TextView tvTitle;
     @BindView(R.id.main_tvExplanation) TextView tvExplanation;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         //Utilizando Retrofit
         ApodService apodService = Data.getRetrofitInstance().create(ApodService.class);
         //Call<Apod> callApodService = apodService.getTodayApod();
-        Call<Apod> callApodService = apodService.getTodayApodWithQuery("J0U8OnXkzemf1OF32OotEIYYrdOfWyUsdGKnxjaj");
+        Call<Apod> callApodService = apodService.getTodayApodWithQuery(BuildConfig.NASA_API_KEY);
 
         callApodService.enqueue(new Callback<Apod>() {
             @Override

@@ -18,5 +18,4 @@ public class MarsRovertResponse implements Serializable {
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
     }
-
 }

@@ -17,11 +17,11 @@ public class DetailActivity extends AppCompatActivity {
     private String earthDate;
     private String cameraName;
 
-    @BindView(R.id.detail_Image)
+    @BindView(R.id.detail_sdvImage)
     SimpleDraweeView itemImage;
-    @BindView(R.id.detail_Title)
+    @BindView(R.id.detail_tvTitle)
     TextView itemTitle;
-    @BindView(R.id.detail_EarthDate)
+    @BindView(R.id.detail_tvEarthDate)
     TextView itemEarthDate;
 
     @Override
@@ -31,20 +31,23 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //Obtenemos los Extras
-        //fullName = getIntent().getExtras().getString("key_fullName");
-        //imgSrc = getIntent().getExtras().getString("key_imgsrc");
-        //earthDate = getIntent().getExtras().getString("key_earthDate");
-        //cameraName = getIntent().getExtras().getString("key_cameraName");
+
+        //El siguiente bloque se comentó porque ya no se va a recibir uno por uno sino el objeto completo
+        /*fullName = getIntent().getExtras().getString("key_fullName");
+        imgSrc = getIntent().getExtras().getString("key_imgsrc");
+        earthDate = getIntent().getExtras().getString("key_earthDate");
+        cameraName = getIntent().getExtras().getString("key_cameraName");*/
 
         Bundle bundle = getIntent().getExtras().getBundle("key_bundle");
         Photo photo = (Photo) bundle.getSerializable("key_photo");
 
+        //Extraemos los datos del objeto Photo
         fullName = photo.getCamera().getFullName();
         imgSrc = photo.getImgSrc();
         earthDate = photo.getEarthDate();
         cameraName = photo.getCamera().getName();
 
-
+        //Asignamos valores a cada control
         itemTitle.setText(fullName);
         itemImage.setImageURI(imgSrc);
         itemEarthDate.setText(cameraName + " " + earthDate);

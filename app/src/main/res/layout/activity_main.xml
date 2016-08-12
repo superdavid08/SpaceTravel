@@ -19,7 +19,7 @@
 
         <ImageView
             android:scaleType="fitXY"
-            android:id="@+id/main_imageApod"
+            android:id="@+id/main_imgApod"
             android:layout_width="match_parent"
             android:layout_height="350dp" />
 
