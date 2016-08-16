@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class MarsRovertResponse implements Serializable {
+public class MarsRoverResponse implements Serializable {
 
     @SerializedName("photos")
     private List<Photo> photos = new ArrayList<Photo>();

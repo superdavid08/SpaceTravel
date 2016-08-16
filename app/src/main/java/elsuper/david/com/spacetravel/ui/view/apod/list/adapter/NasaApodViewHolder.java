@@ -45,5 +45,4 @@ public class NasaApodViewHolder extends RecyclerView.ViewHolder{
         if(onItemListener != null)
             onItemListener.onItemClick(photo);
     }
-
 }

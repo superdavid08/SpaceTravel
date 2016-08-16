@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/navigation_marsRoverItem"
+            android:checkable="false"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/listingNavigationMenu_images" />
+
+        <item android:id="@+id/navigation_todayApodItem"
+            android:checkable="false"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/listingNavigationMenu_apodToday" />
+
+        <item android:id="@+id/navigation_favoriteItem"
+            android:checkable="false"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/listingNavigationMenu_favorities" />
+    </group>
+</menu>

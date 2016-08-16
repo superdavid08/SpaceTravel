@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- android:name=".app.NasaApplication" 2016-08-06 -->
     <application
         android:name=".app.NasaApplication"
         android:allowBackup="true"
@@ -13,13 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".ListActivity">
+        <activity android:name=".ListingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".DetailActivity"></activity>
     </application>
 

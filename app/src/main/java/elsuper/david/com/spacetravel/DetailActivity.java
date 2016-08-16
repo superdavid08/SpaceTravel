@@ -2,6 +2,7 @@ package elsuper.david.com.spacetravel;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -17,12 +18,10 @@ public class DetailActivity extends AppCompatActivity {
     private String earthDate;
     private String cameraName;
 
-    @BindView(R.id.detail_sdvImage)
-    SimpleDraweeView itemImage;
-    @BindView(R.id.detail_tvTitle)
-    TextView itemTitle;
-    @BindView(R.id.detail_tvEarthDate)
-    TextView itemEarthDate;
+    @BindView(R.id.detail_toolbar) Toolbar toolbar;
+    @BindView(R.id.detail_sdvImage) SimpleDraweeView itemImage;
+    @BindView(R.id.detail_tvTitle) TextView itemTitle;
+    @BindView(R.id.detail_tvEarthDate) TextView itemEarthDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +29,9 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+
         //Obtenemos los Extras
-
-        //El siguiente bloque se comentó porque ya no se va a recibir uno por uno sino el objeto completo
-        /*fullName = getIntent().getExtras().getString("key_fullName");
-        imgSrc = getIntent().getExtras().getString("key_imgsrc");
-        earthDate = getIntent().getExtras().getString("key_earthDate");
-        cameraName = getIntent().getExtras().getString("key_cameraName");*/
-
         Bundle bundle = getIntent().getExtras().getBundle("key_bundle");
         Photo photo = (Photo) bundle.getSerializable("key_photo");
 

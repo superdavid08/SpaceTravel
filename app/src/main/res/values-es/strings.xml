@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Viaje Espacial</string>
+    <string name="listingNavigationMenu_images">Imagenes Mars Rover</string>
+    <string name="listingNavigationMenu_apodToday">Foto APOD del día</string>
+    <string name="listingNavigationMenu_favorities">Favoritos</string>
+</resources>

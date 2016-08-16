@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Se cambió el LinearLayout por CardView-->
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
@@ -8,12 +7,6 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp">
 
-    <!--<ImageView
-        android:layout_margin="5dp"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/item_ivImage"
-        android:layout_width="match_parent"
-        android:layout_height="250dp" />-->
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="match_parent"
         android:layout_height="250dp"

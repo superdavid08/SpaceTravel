@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">SpaceTravel</string>
+    <string name="app_name">Space Travel</string>
+    <string name="listingNavigationMenu_images">Mars Rover Images</string>
+    <string name="listingNavigationMenu_apodToday">Photo today APOD</string>
+    <string name="listingNavigationMenu_favorities">Favorities</string>
 </resources>
