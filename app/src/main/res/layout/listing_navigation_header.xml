@@ -6,11 +6,14 @@
     android:background="@color/colorHeader">
 
     <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_gravity="center"
+        android:id="@+id/header_sdvUserImage"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_margin="15dp"/>
+        android:layout_margin="15dp" />
 
     <TextView
+        android:id="@+id/header_tvUserName"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

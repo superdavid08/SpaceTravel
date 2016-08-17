@@ -3,17 +3,17 @@
     <group android:checkableBehavior="single">
         <item android:id="@+id/navigation_marsRoverItem"
             android:checkable="false"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@android:drawable/ic_menu_gallery"
             android:title="@string/listingNavigationMenu_images" />
 
         <item android:id="@+id/navigation_todayApodItem"
             android:checkable="false"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@android:drawable/ic_menu_camera"
             android:title="@string/listingNavigationMenu_apodToday" />
 
         <item android:id="@+id/navigation_favoriteItem"
             android:checkable="false"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@android:drawable/btn_star_big_on"
             android:title="@string/listingNavigationMenu_favorities" />
     </group>
 </menu>

@@ -3,4 +3,6 @@
     <string name="listingNavigationMenu_images">Mars Rover Images</string>
     <string name="listingNavigationMenu_apodToday">Photo today APOD</string>
     <string name="listingNavigationMenu_favorities">Favorities</string>
+    <string name="facebook_app_id">183000008784846</string>
+    <string name="fragments_share">Share</string>
 </resources>

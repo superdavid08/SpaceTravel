@@ -4,4 +4,6 @@
     <string name="listingNavigationMenu_images">Imagenes Mars Rover</string>
     <string name="listingNavigationMenu_apodToday">Foto APOD del día</string>
     <string name="listingNavigationMenu_favorities">Favoritos</string>
+    <string name="facebook_app_id">183000008784846</string>
+    <string name="fragments_share">Compartir</string>
 </resources>

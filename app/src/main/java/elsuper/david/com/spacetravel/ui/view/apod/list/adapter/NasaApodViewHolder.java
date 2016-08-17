@@ -22,11 +22,8 @@ public class NasaApodViewHolder extends RecyclerView.ViewHolder{
     private NasaApodAdapter.OnItemClickListener onItemListener;
     private Photo photo;
 
-    //@BindView(R.id.item_apodImage) ImageView itemApodImage;
-    @BindView(R.id.item_sdvImage)
-    SimpleDraweeView itemImage;
-    @BindView(R.id.item_tvTitle)
-    TextView itemTitle;
+    @BindView(R.id.item_sdvImage) SimpleDraweeView itemImage;
+    @BindView(R.id.item_tvTitle) TextView itemTitle;
 
     public NasaApodViewHolder(View itemView) {
         super(itemView);

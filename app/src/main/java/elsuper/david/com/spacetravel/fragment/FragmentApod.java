@@ -1,10 +1,14 @@
 package elsuper.david.com.spacetravel.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -34,6 +38,8 @@ public class FragmentApod extends Fragment {
     @BindView(R.id.fragApod_tvExplanation) TextView tvExplanation;
     @BindView(R.id.fragApod_tvCopyright) TextView tvCopyright;
 
+    private String urlImageApod;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,8 +64,10 @@ public class FragmentApod extends Fragment {
             public void onResponse(Call<Apod> call, Response<Apod> response) {
 
                 //Asignando valores
-                if(response.body().getMediaType().equals("image"))
+                if(response.body().getMediaType().equals("image")) {
+                    urlImageApod = response.body().getHdurl();
                     Picasso.with(getActivity()).load(response.body().getHdurl()).into(imageApod);
+                }
                 tvDate.setText(response.body().getDate());
                 tvTitle.setText(response.body().getTitle());
                 tvExplanation.setText(response.body().getExplanation());
@@ -75,5 +83,37 @@ public class FragmentApod extends Fragment {
 
             }
         });
+    }
+
+    //2016-08-13
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.apod_menu,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.menu_shareTodayApod:
+                shareText(urlImageApod);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void shareText(String text){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.fragments_share)));
     }
 }

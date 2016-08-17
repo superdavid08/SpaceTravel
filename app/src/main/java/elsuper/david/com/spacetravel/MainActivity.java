@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Acceedemos a los controles
         ButterKnife.bind(this);//2016-08-05
-        Log.d("SpaceTravel", BuildConfig.URL);
+        //Log.d("SpaceTravel", BuildConfig.URL);
 
 
         //Utilizando Retrofit
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         callApodService.enqueue(new Callback<Apod>() {
             @Override
             public void onResponse(Call<Apod> call, Response<Apod> response) {
-                Log.d("SpaceTravel", response.body().getTitle());
+                //Log.d("SpaceTravel", response.body().getTitle());
 
                 //Asignando valores
                 if(response.body().getMediaType().equals("image"))

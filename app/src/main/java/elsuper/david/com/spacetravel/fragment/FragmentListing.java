@@ -9,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -70,7 +73,6 @@ public class FragmentListing extends Fragment{
         apodService.getTodayMarsRovertWithQuery(400, BuildConfig.NASA_API_KEY).enqueue(new Callback<MarsRoverResponse>() {
             @Override
             public void onResponse(Call<MarsRoverResponse> call, Response<MarsRoverResponse> response) {
-
                 nasaApodAdapter.setMarsPhotos(response.body().getPhotos());
                 marsRoverListingRecycler.setAdapter(nasaApodAdapter);
             }
@@ -80,5 +82,37 @@ public class FragmentListing extends Fragment{
 
             }
         });
+    }
+
+    //2016-08-13
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.list_rover_menu,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.menu_shareListRover:
+                shareText("Lista de fotos");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void shareText(String text){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(Intent.createChooser(shareIntent,getString(R.string.fragments_share)));
     }
 }
