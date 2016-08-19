@@ -74,6 +74,36 @@ public class RoverDataSource {
         return  modelRoverList;
     }
 
+    public Rover getRover(int idPhoto){
+        //Abrimos la conexión
+        db = helper.getWritableDatabase();
+
+        //Objeto a devolver
+        Rover modelRover = new Rover();
+
+        //Consultamos
+        Cursor cursor = db.query(MySqliteHelper.TABLENAME_ROVER, null, MySqliteHelper.COLUMN_ROVER_PHOTO_ID + "=?",
+                new String[]{String.valueOf(idPhoto)},null,null,null);
+
+        //Obtenemos el primer registro del cursor
+        if(cursor.moveToFirst()){
+            modelRover.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ROVER_ID)));
+            modelRover.setName(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ROVER_NAME)));
+            modelRover.setLandingDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ROVER_LANDING_DATE)));
+            modelRover.setMaxSol(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ROVER_MAX_SOL)));
+            modelRover.setMaxDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ROVER_MAX_DATE)));
+            modelRover.setTotalPhotos(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ROVER_TOTAL_PHOTOS)));
+        }
+        else
+            modelRover = null;
+
+        //Cerramos la conexión
+        if(db.isOpen())
+            db.close();
+
+        return modelRover;
+    }
+
     public void deleteRoversByIdPhoto(int photoId){
         //Abrimos la conexión
         db = helper.getWritableDatabase();

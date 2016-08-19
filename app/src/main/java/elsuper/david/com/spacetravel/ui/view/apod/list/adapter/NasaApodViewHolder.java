@@ -10,6 +10,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import elsuper.david.com.spacetravel.R;
 import elsuper.david.com.spacetravel.model.Photo;
 
@@ -20,6 +21,7 @@ public class NasaApodViewHolder extends RecyclerView.ViewHolder{
 
     //Para manejar el click en la foto
     private NasaApodAdapter.OnItemClickListener onItemListener;
+    private NasaApodAdapter.OnItemLongClickListener onItemLongListener;
     private Photo photo;
 
     @BindView(R.id.item_sdvImage) SimpleDraweeView itemImage;
@@ -36,10 +38,25 @@ public class NasaApodViewHolder extends RecyclerView.ViewHolder{
         this.onItemListener = onItemListener;
     }
 
+    public void setItemLongClick(Photo photo, NasaApodAdapter.OnItemLongClickListener onItemLongListener){
+        this.photo = photo;
+        this.onItemLongListener = onItemLongListener;
+    }
+
     //Para manejar el click en la foto
     @OnClick(R.id.item_sdvImage)
     public void onViewClick(View view){
         if(onItemListener != null)
             onItemListener.onItemClick(photo);
+    }
+
+    @OnLongClick(R.id.item_sdvImage)
+    public boolean onViewLongClick(View view){
+        if(onItemLongListener != null) {
+            onItemLongListener.onItemLongClick(photo);
+            return true;
+        }
+        else
+            return false;
     }
 }

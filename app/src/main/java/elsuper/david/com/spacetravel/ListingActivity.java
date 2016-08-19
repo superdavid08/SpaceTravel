@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import elsuper.david.com.spacetravel.fragment.FragmentApod;
+import elsuper.david.com.spacetravel.fragment.FragmentFavorities;
 import elsuper.david.com.spacetravel.fragment.FragmentListing;
 
 public class ListingActivity extends AppCompatActivity {
@@ -78,8 +79,8 @@ public class ListingActivity extends AppCompatActivity {
                         //Snackbar.make(findViewById(android.R.id.content), "Mars Rover", Snackbar.LENGTH_SHORT).show();
                         return true;
                     case R.id.navigation_favoriteItem:
-                        Snackbar.make(findViewById(android.R.id.content),
-                                getString(R.string.listingNavigationMenu_favorities) , Snackbar.LENGTH_SHORT).show();
+                        getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentFavorities()).commit();
+                        //Snackbar.make(findViewById(android.R.id.content), getString(R.string.listingNavigationMenu_favorities) , Snackbar.LENGTH_SHORT).show();
                         return true;
                     default:
                         return false;

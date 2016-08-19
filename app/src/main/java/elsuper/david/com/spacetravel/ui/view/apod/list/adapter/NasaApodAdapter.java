@@ -17,6 +17,7 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
     private List<Photo> marsPhotos;
     //interface
     private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
 
     public NasaApodAdapter(){}
     public NasaApodAdapter(List<Photo> marsPhotos) {
@@ -39,6 +40,8 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
                 .into(holder.itemImage);*/
         holder.itemImage.setImageURI(photo.getImgSrc());//2016-08-06
         holder.setItemClick(photo,onItemClickListener);
+        holder.setItemLongClick(photo,onItemLongClickListener);
+
     }
 
     @Override
@@ -50,6 +53,10 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
         this.onItemClickListener = onItemClickListener;
     }
 
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener){
+        this.onItemLongClickListener = onItemLongClickListener;
+    }
+
     public void setMarsPhotos(List<Photo> marsPhotos){
         this.marsPhotos = marsPhotos;
     }
@@ -57,5 +64,9 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
     //Interface para manejar el click en la foto
     public interface OnItemClickListener{
         void onItemClick(Photo photo);
+    }
+
+    public interface OnItemLongClickListener{
+        void onItemLongClick(Photo photo); //Se agrega el click largo
     }
 }

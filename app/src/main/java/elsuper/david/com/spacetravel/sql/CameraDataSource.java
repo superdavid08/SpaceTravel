@@ -70,6 +70,34 @@ public class CameraDataSource {
         return  modelCameraList;
     }
 
+    public Camera getCamera(int idPhoto){
+        //Abrimos la conexión
+        db = helper.getWritableDatabase();
+
+        //Objeto a devolver
+        Camera modelCamera = new Camera();
+
+        //Consultamos
+        Cursor cursor = db.query(MySqliteHelper.TABLENAME_CAMERA, null, MySqliteHelper.COLUMN_CAMERA_PHOTO_ID + "=?",
+                new String[]{String.valueOf(idPhoto)},null,null,null);
+
+        //Obtenemos el primer registro del cursor
+        if(cursor.moveToFirst()){
+            modelCamera.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_CAMERA_ID)));
+            modelCamera.setName(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_CAMERA_NAME)));
+            modelCamera.setRoverId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_CAMERA_ROVER_ID)));
+            modelCamera.setFullName(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_CAMERA_FULL_NAME)));
+        }
+        else
+            modelCamera = null;
+
+        //Cerramos la conexión
+        if(db.isOpen())
+            db.close();
+
+        return modelCamera;
+    }
+
     public void deleteCamerasByIdPhoto(int photoId){
         //Abrimos la conexión
         db = helper.getWritableDatabase();

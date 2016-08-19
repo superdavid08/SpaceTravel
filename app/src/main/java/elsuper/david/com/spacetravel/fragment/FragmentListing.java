@@ -1,9 +1,11 @@
 package elsuper.david.com.spacetravel.fragment;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import elsuper.david.com.spacetravel.BuildConfig;
@@ -22,8 +26,13 @@ import elsuper.david.com.spacetravel.DetailActivity;
 import elsuper.david.com.spacetravel.R;
 import elsuper.david.com.spacetravel.data.ApodService;
 import elsuper.david.com.spacetravel.data.Data;
+import elsuper.david.com.spacetravel.model.CameraSecondary;
 import elsuper.david.com.spacetravel.model.MarsRoverResponse;
 import elsuper.david.com.spacetravel.model.Photo;
+import elsuper.david.com.spacetravel.sql.CameraDataSource;
+import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
+import elsuper.david.com.spacetravel.sql.PhotoDataSource;
+import elsuper.david.com.spacetravel.sql.RoverDataSource;
 import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaApodAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +42,12 @@ public class FragmentListing extends Fragment{
 
     @BindView(R.id.fragListing_marsRover) RecyclerView marsRoverListingRecycler;
 
+    //Para usar la base de datos
+    private PhotoDataSource photoDataSource;
+    private CameraDataSource cameraDataSource;
+    private RoverDataSource roverDataSource;
+    private CameraSecondaryDataSource cameraSecondaryDataSource;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +55,13 @@ public class FragmentListing extends Fragment{
         //Inflamos la vista
         View view = inflater.inflate(R.layout.fragment_listing,container,false);
         ButterKnife.bind(this,view);
+
+        //Creamos las instancias para acceder a las tablas
+        photoDataSource = new PhotoDataSource(getActivity());
+        cameraDataSource = new CameraDataSource(getActivity());
+        roverDataSource = new RoverDataSource(getActivity());
+        cameraSecondaryDataSource = new CameraSecondaryDataSource(getActivity());
+
         return view;
     }
 
@@ -65,6 +87,36 @@ public class FragmentListing extends Fragment{
                 bundle.putSerializable("key_photo",photo);
                 intent.putExtra("key_bundle",bundle);
                 startActivity(intent);
+            }
+        });
+
+        //Se agrega el click largo
+        nasaApodAdapter.setOnItemLongClickListener(new NasaApodAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(final Photo photo) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Agregar a Favoritos")
+                        .setMessage("Deseas agregarlo a tu lista de favoritos?")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                //Guardamos el objeto en la base de datos
+                                photoDataSource.savePhoto(photo);
+                                cameraDataSource.saveCamera(photo.getCamera(),photo.getId());
+                                roverDataSource.saveRover(photo.getRover(),photo.getId());
+
+                                List<CameraSecondary> cameraSecondaryList = photo.getRover().getCameras();
+                                for (CameraSecondary cameraSecondary: cameraSecondaryList) {
+                                    cameraSecondaryDataSource.saveCameraSecondary(cameraSecondary,photo.getId());
+                                }
+                            }
+                        }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).setCancelable(false).create().show();
             }
         });
 
