@@ -69,13 +69,13 @@ public class PhotoDataSource {
         return  modelPhotoList;
     }
 
-    public void deletePhoto(Photo modelPhoto){
+    public void deletePhoto(int photoId){
         //Abrimos la conexión
         db = helper.getWritableDatabase();
 
         //Eliminamos el registro
         db.delete(MySqliteHelper.TABLENAME_PHOTO, MySqliteHelper.COLUMN_PHOTO_ID + "=?",
-                new String[]{String.valueOf(modelPhoto.getId())});
+                new String[]{String.valueOf(photoId)});
 
         //Cerramos la conexión
         if(db.isOpen())

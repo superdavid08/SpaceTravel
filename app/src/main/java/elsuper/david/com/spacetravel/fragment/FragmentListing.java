@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -94,29 +95,35 @@ public class FragmentListing extends Fragment{
         nasaApodAdapter.setOnItemLongClickListener(new NasaApodAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(final Photo photo) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Agregar a Favoritos")
-                        .setMessage("Deseas agregarlo a tu lista de favoritos?")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                //Si no existe la foto en la lista de favoritos
+                if(photoDataSource.getPhoto(photo.getId()) == null) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Agregar a Favoritos")
+                            .setMessage("Deseas agregarlo a tu lista de favoritos?")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                //Guardamos el objeto en la base de datos
-                                photoDataSource.savePhoto(photo);
-                                cameraDataSource.saveCamera(photo.getCamera(),photo.getId());
-                                roverDataSource.saveRover(photo.getRover(),photo.getId());
+                                    //Guardamos el objeto en la base de datos
+                                    photoDataSource.savePhoto(photo);
+                                    cameraDataSource.saveCamera(photo.getCamera(), photo.getId());
+                                    roverDataSource.saveRover(photo.getRover(), photo.getId());
 
-                                List<CameraSecondary> cameraSecondaryList = photo.getRover().getCameras();
-                                for (CameraSecondary cameraSecondary: cameraSecondaryList) {
-                                    cameraSecondaryDataSource.saveCameraSecondary(cameraSecondary,photo.getId());
+                                    List<CameraSecondary> cameraSecondaryList = photo.getRover().getCameras();
+                                    for (CameraSecondary cameraSecondary : cameraSecondaryList) {
+                                        cameraSecondaryDataSource.saveCameraSecondary(cameraSecondary, photo.getId());
+                                    }
                                 }
-                            }
-                        }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                            }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                }).setCancelable(false).create().show();
+                        }
+                    }).setCancelable(false).create().show();
+                }
+                else{
+                    Toast.makeText(getActivity(),"El elemento ya existe en la lista de Favoritos",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -3,6 +3,7 @@ package elsuper.david.com.spacetravel;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -13,15 +14,16 @@ import elsuper.david.com.spacetravel.model.Photo;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private String fullName;
-    private String imgSrc;
-    private String earthDate;
-    private String cameraName;
-
     @BindView(R.id.detail_toolbar) Toolbar toolbar;
     @BindView(R.id.detail_sdvImage) SimpleDraweeView itemImage;
     @BindView(R.id.detail_tvTitle) TextView itemTitle;
+    @BindView(R.id.detail_tvId) TextView itemId;
+    @BindView(R.id.detail_tvSol) TextView itemSol;
     @BindView(R.id.detail_tvEarthDate) TextView itemEarthDate;
+    @BindView(R.id.detail_tvCameraId) TextView itemCameraId;
+    @BindView(R.id.detail_tvCameraName) TextView itemCameraName;
+    @BindView(R.id.detail_tvCameraRoverId) TextView itemCameraRoverId;
+    @BindView(R.id.detail_tvCameraFullName) TextView itemCameraFullName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +32,34 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         //Obtenemos los Extras
         Bundle bundle = getIntent().getExtras().getBundle("key_bundle");
         Photo photo = (Photo) bundle.getSerializable("key_photo");
 
-        //Extraemos los datos del objeto Photo
-        fullName = photo.getCamera().getFullName();
-        imgSrc = photo.getImgSrc();
-        earthDate = photo.getEarthDate();
-        cameraName = photo.getCamera().getName();
+        //Extraemos los datos del objeto Photo y los asignamos valores a cada control
+        itemImage.setImageURI(photo.getImgSrc());
+        itemTitle.setText(photo.getCamera().getFullName());
+        itemId.setText(photo.getId().toString());
+        itemSol.setText(photo.getSol().toString());
+        itemEarthDate.setText(photo.getEarthDate());
+        itemCameraId.setText(photo.getCamera().getId().toString());
+        itemCameraName.setText(photo.getCamera().getName());
+        itemCameraRoverId.setText(photo.getCamera().getRoverId().toString());
+        itemCameraFullName.setText(photo.getCamera().getFullName());
+    }
 
-        //Asignamos valores a cada control
-        itemTitle.setText(fullName);
-        itemImage.setImageURI(imgSrc);
-        itemEarthDate.setText(cameraName + " " + earthDate);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

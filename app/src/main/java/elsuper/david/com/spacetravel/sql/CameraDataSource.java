@@ -44,14 +44,14 @@ public class CameraDataSource {
         return result;
     }
 
-    public List<Camera> getAllCamerasByIdPhoto(int idPhoto){
+    public List<Camera> getAllCamerasByIdPhoto(int photoId){
         //Abrimos la conexión
         db = helper.getWritableDatabase();
 
         //Consultamos toda la tabla photo_table
         List<Camera> modelCameraList = new ArrayList<>();
         Cursor cursor = db.query(MySqliteHelper.TABLENAME_CAMERA,null,MySqliteHelper.COLUMN_CAMERA_PHOTO_ID + "=?",
-                new String[]{String.valueOf(idPhoto)},null,null,null);
+                new String[]{String.valueOf(photoId)},null,null,null);
 
         //Agregamos cada elemento del cursor a la lista
         while(cursor.moveToNext()){

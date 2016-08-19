@@ -1,9 +1,11 @@
 package elsuper.david.com.spacetravel.fragment;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -70,15 +73,56 @@ public class FragmentFavorities extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
-        //GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),2);
-        //StaggeredGridLayoutManager staggeredGridLayoutManager =
-                //new StaggeredGridLayoutManager(10,StaggeredGridLayoutManager.VERTICAL);
         marsRoverFavoritiesRecycler.setLayoutManager(linearLayoutManager);
-        //marsRoverFavoritiesRecycler.setLayoutManager(gridLayoutManager);
-        //marsRoverFavoritiesRecycler.setLayoutManager(staggeredGridLayoutManager);
 
         final NasaApodAdapter nasaApodAdapter = new NasaApodAdapter();
 
+        //Llenamos el adapter
+        nasaApodAdapter.setMarsPhotos(getPhotos());
+        marsRoverFavoritiesRecycler.setAdapter(nasaApodAdapter);
+
+        //Para manejar el click en la foto
+        nasaApodAdapter.setOnItemClickListener(new NasaApodAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(Photo photo) {
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("key_photo",photo);
+                intent.putExtra("key_bundle",bundle);
+                startActivity(intent);
+            }
+        });
+
+        //Se agrega el click largo
+        nasaApodAdapter.setOnItemLongClickListener(new NasaApodAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(final Photo photo) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Eliminar Favorito")
+                        .setMessage("Deseas eliminarlo de tu lista de favoritos?")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Eliminamos el objeto de la base de datos
+                                cameraSecondaryDataSource.deleteCamerasSecondariesByIdPhoto(photo.getId());
+                                roverDataSource.deleteRoversByIdPhoto(photo.getId());
+                                cameraDataSource.deleteCamerasByIdPhoto(photo.getId());
+                                photoDataSource.deletePhoto(photo.getId());
+                                //Recargamos la lista
+                                nasaApodAdapter.setMarsPhotos(getPhotos());
+                                marsRoverFavoritiesRecycler.setAdapter(nasaApodAdapter);
+                            }
+                        }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).setCancelable(false).create().show();
+            }
+        });
+    }
+
+    private List<Photo> getPhotos() {
         //Consultamos los datos en la base
         List<Photo> photoList = photoDataSource.getAllPhotos();
         for (Photo photo: photoList) {
@@ -91,8 +135,6 @@ public class FragmentFavorities extends Fragment {
             Rover rover = roverDataSource.getRover(photo.getId());
             rover.setCameras(cameraSecondaryList);
         }
-        //Llenamos el adapter
-        nasaApodAdapter.setMarsPhotos(photoList);
-        marsRoverFavoritiesRecycler.setAdapter(nasaApodAdapter);
+        return photoList;
     }
 }

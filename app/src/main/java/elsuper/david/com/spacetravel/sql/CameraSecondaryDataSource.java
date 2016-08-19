@@ -42,7 +42,7 @@ public class CameraSecondaryDataSource {
         return result;
     }
 
-    public List<CameraSecondary> getAllCamerasSecondariesByIdPhoto(int idPhoto){
+    public List<CameraSecondary> getAllCamerasSecondariesByIdPhoto(int photoId){
         //Abrimos la conexión
         db = helper.getWritableDatabase();
 
@@ -50,7 +50,7 @@ public class CameraSecondaryDataSource {
         List<CameraSecondary> modelCameraSecondaryList = new ArrayList<>();
         Cursor cursor = db.query(MySqliteHelper.TABLENAME_CAMERASECONDARY,null,
                 MySqliteHelper.COLUMN_CAMERASECONDARY_PHOTO_ID + "=?",
-                new String[]{String.valueOf(idPhoto)},null,null,null);
+                new String[]{String.valueOf(photoId)},null,null,null);
 
         //Agregamos cada elemento del cursor a la lista
         while(cursor.moveToNext()){

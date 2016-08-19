@@ -46,14 +46,14 @@ public class RoverDataSource {
         return result;
     }
 
-    public List<Rover> getAllRoversByIdPhoto(int idPhoto){
+    public List<Rover> getAllRoversByIdPhoto(int photoId){
         //Abrimos la conexión
         db = helper.getWritableDatabase();
 
         //Consultamos toda la tabla photo_table
         List<Rover> modelRoverList = new ArrayList<>();
         Cursor cursor = db.query(MySqliteHelper.TABLENAME_ROVER,null,MySqliteHelper.COLUMN_ROVER_PHOTO_ID + "=?",
-                new String[]{String.valueOf(idPhoto)},null,null,null);
+                new String[]{String.valueOf(photoId)},null,null,null);
 
         //Agregamos cada elemento del cursor a la lista
         while(cursor.moveToNext()){
