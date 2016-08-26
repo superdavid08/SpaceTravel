@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Viaje Espacial</string>
-    <string name="listingNavigationMenu_images">Imagenes Mars Rover</string>
-    <string name="listingNavigationMenu_apodToday">Foto APOD del día</string>
+    <string name="listingNavigationMenu_images">Fotos del Rover en Marte</string>
+    <string name="listingNavigationMenu_apodToday">Imagen APOD del día</string>
     <string name="listingNavigationMenu_favorities">Favoritos</string>
     <string name="facebook_app_id">183000008784846</string>
-    <string name="fragments_share">Compartir</string>
+    <string name="fragments_msgShare">Compartir</string>
+    <string name="fragApod_tvDay">Día del mes: </string>
+    <string name="fragApod_btnReload">Recargar</string>
+    <string name="fragApod_msgInvalidDay">Día no válido</string>
+    <string name="fragments_msgAlreadyExist">El elemento ya existe en la lista de favoritos</string>
+    <string name="fragments_msgAddToFavorities">Agregar a Favoritos</string>
+    <string name="fragments_msgQuestionAdd" formatted="false">Deseas agregar "%s" a tu lista de favoritos?</string>
+    <string name="fragListing_btnNextPage">Siguiente página</string>
 </resources>

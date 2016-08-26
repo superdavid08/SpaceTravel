@@ -1,16 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="elsuper.david.com.MainActivity"
-        android:padding="10dp"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight=".25"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:text="@string/fragApod_tvDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_weight=".25"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:singleLine="true"
+                android:id="@+id/fragApod_etDay"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="false"
+                android:background="@color/colorBtnExtra"
+                android:layout_weight=".5"
+                android:text="@string/fragApod_btnReload"
+                android:id="@+id/fragApod_btnReload"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp" />
+
+        </LinearLayout>
 
         <ImageView
             android:scaleType="fitXY"
@@ -25,6 +61,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:textStyle="bold"
             android:gravity="center"
             android:id="@+id/fragApod_tvTitle"
             android:layout_width="match_parent"
@@ -32,7 +69,7 @@
 
         <TextView
             android:paddingTop="15dp"
-            android:gravity="center"
+            android:gravity="fill"
             android:id="@+id/fragApod_tvExplanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

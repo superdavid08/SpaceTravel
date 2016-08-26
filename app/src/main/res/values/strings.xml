@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">Space Travel</string>
-    <string name="listingNavigationMenu_images">Mars Rover Images</string>
+    <string name="listingNavigationMenu_images">Mars Rover Photos</string>
     <string name="listingNavigationMenu_apodToday">Photo today APOD</string>
     <string name="listingNavigationMenu_favorities">Favorities</string>
     <string name="facebook_app_id">183000008784846</string>
-    <string name="fragments_share">Share</string>
+    <string name="fragments_msgShare">Share</string>
+    <string name="fragApod_tvDay">Day of month: </string>
+    <string name="fragApod_btnReload">Reload</string>
+    <string name="fragApod_msgInvalidDay">Invalid day</string>
+    <string name="fragments_msgAlreadyExist">The element already exists in the favorities list</string>
+    <string name="fragments_msgAddToFavorities">Add to Favorities</string>
+    <string name="fragments_msgQuestionAdd" formatted="false">Deseas agregar "%s" a tu lista de favoritos?</string>
+    <string name="fragListing_btnNextPage">Next page</string>
 </resources>

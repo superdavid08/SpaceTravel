@@ -14,6 +14,28 @@ public class MySqliteHelper extends SQLiteOpenHelper {
     private final static int DATABASE_VERSION = 1;
     public final static String COLUMN_ID = BaseColumns._ID;
 
+    /***********************Tabla Apod***********************/
+    public final static String TABLENAME_APOD = "apod_table";
+    public final static String COLUMN_APOD_COPYRIGHT = "copyright";
+    public final static String COLUMN_APOD_DATE = "date";
+    public final static String COLUMN_APOD_EXPLANATION = "explanation";
+    public final static String COLUMN_APOD_HDURL = "hdurl";
+    public final static String COLUMN_APOD_MEDIA_TYPE = "media_type";
+    public final static String COLUMN_APOD_SERVICE_VERSION = "service_version";
+    public final static String COLUMN_APOD_TITLE = "title";
+    public final static String COLUMN_APOD_URL = "url";
+
+    private final static String CREATE_TABLE_APOD = "create table " + TABLENAME_APOD +
+            "(" + COLUMN_ID + " integer primary key autoincrement, " +
+            COLUMN_APOD_COPYRIGHT + " text not null, " +
+            COLUMN_APOD_DATE + " text not null, " +
+            COLUMN_APOD_EXPLANATION + " text not null, " +
+            COLUMN_APOD_HDURL + " text not null, " +
+            COLUMN_APOD_MEDIA_TYPE + " text not null, " +
+            COLUMN_APOD_SERVICE_VERSION + " text not null, " +
+            COLUMN_APOD_TITLE + " text not null, " +
+            COLUMN_APOD_URL + " text not null)";
+
     /***********************Tabla photo***********************/
     public final static String TABLENAME_PHOTO = "photo_table";
     public final static String COLUMN_PHOTO_ID = "photo_id";
@@ -82,6 +104,7 @@ public class MySqliteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE_APOD);
         db.execSQL(CREATE_TABLE_PHOTO);
         db.execSQL(CREATE_TABLE_CAMERA);
         db.execSQL(CREATE_TABLE_ROVER);

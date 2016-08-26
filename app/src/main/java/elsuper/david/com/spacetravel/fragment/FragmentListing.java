@@ -16,12 +16,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import elsuper.david.com.spacetravel.BuildConfig;
 import elsuper.david.com.spacetravel.DetailActivity;
 import elsuper.david.com.spacetravel.R;
@@ -41,7 +45,14 @@ import retrofit2.Response;
 
 public class FragmentListing extends Fragment{
 
+    //Controles del fragment
     @BindView(R.id.fragListing_marsRover) RecyclerView marsRoverListingRecycler;
+    @BindView(R.id.fragListing_btnNextpage)
+    Button btnNextpage;
+
+    private static final int solNumberMax = 1388; //Número máximo al 26/08/2016
+    private int solNumber;
+
 
     //Para usar la base de datos
     private PhotoDataSource photoDataSource;
@@ -62,6 +73,12 @@ public class FragmentListing extends Fragment{
         cameraDataSource = new CameraDataSource(getActivity());
         roverDataSource = new RoverDataSource(getActivity());
         cameraSecondaryDataSource = new CameraSecondaryDataSource(getActivity());
+
+        //Generamos un número aleatorio entre 1 y solNumberMax para que sea el solNumber
+        Random random = new Random();
+        solNumber = (int)(random.nextDouble() * (solNumberMax +1));
+        if(solNumberMax == 0)
+            solNumber = 1;
 
         return view;
     }
@@ -122,18 +139,19 @@ public class FragmentListing extends Fragment{
                     }).setCancelable(false).create().show();
                 }
                 else{
-                    Toast.makeText(getActivity(),"El elemento ya existe en la lista de Favoritos",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),getString(R.string.fragments_msgAlreadyExist),Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         ApodService apodService = Data.getRetrofitInstance().create(ApodService.class);
 
-        apodService.getTodayMarsRovertWithQuery(400, BuildConfig.NASA_API_KEY).enqueue(new Callback<MarsRoverResponse>() {
+        apodService.getTodayMarsRovertWithQuery(solNumber, BuildConfig.NASA_API_KEY).enqueue(new Callback<MarsRoverResponse>() {
             @Override
             public void onResponse(Call<MarsRoverResponse> call, Response<MarsRoverResponse> response) {
                 nasaApodAdapter.setMarsPhotos(response.body().getPhotos());
                 marsRoverListingRecycler.setAdapter(nasaApodAdapter);
+                Toast.makeText(getActivity(),String.valueOf(solNumber),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -143,7 +161,10 @@ public class FragmentListing extends Fragment{
         });
     }
 
-    //2016-08-13
+    private void apodServiceEnqueue(ApodService apodService) {
+    }
+
+    //region Menú
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.list_rover_menu,menu);
@@ -172,6 +193,12 @@ public class FragmentListing extends Fragment{
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
-        startActivity(Intent.createChooser(shareIntent,getString(R.string.fragments_share)));
+        startActivity(Intent.createChooser(shareIntent,getString(R.string.fragments_msgShare)));
+    }
+    //endregion
+
+    @OnClick(R.id.fragListing_btnNextpage)
+    public void onClickBtnNextPage(){
+        //apodServiceEnqueue(apodService);
     }
 }

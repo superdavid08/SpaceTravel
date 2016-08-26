@@ -20,6 +20,14 @@ public interface ApodService {
     @GET("planetary/apod")
     Call<Apod> getTodayApodWithQuery(@Query("api_key") String apiKey);
 
+    @GET("planetary/apod")
+    Call<Apod> getTodayApodWithAllQuery(@Query("date") String date, @Query("api_key") String apiKey);
+
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
     Call<MarsRoverResponse> getTodayMarsRovertWithQuery(@Query("sol") int sol, @Query("api_key") String apiKey);
+
+    @GET("mars-photos/api/v1/rovers/curiosity/photos")
+    Call<MarsRoverResponse> getTodayMarsRovertWithAllQuery(@Query("sol") int sol,
+                                                           @Query("page") int page, @Query("api_key") String apiKey);
+
 }
