@@ -12,38 +12,19 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:paddingBottom="10dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_weight=".25"
-                android:textStyle="bold"
-                android:gravity="right"
-                android:text="@string/fragApod_tvDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:layout_weight=".25"
-                android:textSize="14sp"
-                android:textAlignment="center"
-                android:inputType="number"
-                android:maxLength="2"
-                android:singleLine="true"
-                android:id="@+id/fragApod_etDay"
-                android:layout_width="35dp"
-                android:layout_height="wrap_content" />
-
             <Button
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorComplement1"
                 android:textAllCaps="false"
-                android:background="@color/colorBtnExtra"
-                android:layout_weight=".5"
-                android:text="@string/fragApod_btnReload"
-                android:id="@+id/fragApod_btnReload"
-                android:layout_width="wrap_content"
+                android:background="@color/colorComplement5"
+                android:text="@string/fragApod_btnSelectDate"
+                android:id="@+id/fragApod_btnSelectDate"
+                android:layout_width="200dp"
                 android:layout_height="30dp" />
 
         </LinearLayout>
@@ -55,12 +36,15 @@
             android:layout_height="350dp" />
 
         <TextView
+            android:textStyle="bold"
+            android:paddingBottom="10dp"
             android:gravity="right"
             android:id="@+id/fragApod_tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
+            android:textColor="@color/colorSecondary25"
             android:textStyle="bold"
             android:gravity="center"
             android:id="@+id/fragApod_tvTitle"

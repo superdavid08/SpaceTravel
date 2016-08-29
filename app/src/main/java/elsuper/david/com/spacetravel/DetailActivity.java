@@ -1,9 +1,12 @@
 package elsuper.david.com.spacetravel;
 
+import android.graphics.Matrix;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;

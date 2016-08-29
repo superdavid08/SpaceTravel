@@ -3,8 +3,34 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorHeader">#ff4040</color>
-    <color name="colorMain">#E3F2FD</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBtnExtra">#7da74d</color>
+    <!--Utilizando paletton-->
+    <color name="colorPrimary1">#8895DC</color>
+    <color name="colorPrimary2">#5E6EC7</color>
+    <color name="colorPrimary3">#3F52B5</color> <!--Principal-->
+    <color name="colorPrimary4">#2137AA</color>
+    <color name="colorPrimary5">#132584</color>
+
+    <color name="colorSecondary1">#A385DC</color>
+    <color name="colorSecondary2">#7F5AC7</color>
+    <color name="colorSecondary3">#653BB5</color> <!--Principal-->
+    <color name="colorSecondary4">#653BB5</color>
+    <color name="colorSecondary5">#371083</color>
+
+    <color name="colorSecondary21">#FFF190</color>
+    <color name="colorSecondary22">#FFEB64</color>
+    <color name="colorSecondary23">#FFE641</color> <!--Principal-->
+    <color name="colorSecondary24">#F9DB13</color>
+    <color name="colorSecondary25">#C0A805</color>
+
+    <color name="colorComplement1">#FFDF90</color>
+    <color name="colorComplement2">#FFD264</color>
+    <color name="colorComplement3">#FFC841</color> <!--Principal-->
+    <color name="colorComplement4">#F9B713</color>
+    <color name="colorComplement5">#C08A05</color>
+
+    <color name="colorEnabled">#b9bcc1</color>
+
 </resources>
+
+

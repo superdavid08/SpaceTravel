@@ -3,6 +3,7 @@ package elsuper.david.com.spacetravel.fragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -47,25 +49,32 @@ public class FragmentListing extends Fragment{
 
     //Controles del fragment
     @BindView(R.id.fragListing_marsRover) RecyclerView marsRoverListingRecycler;
-    @BindView(R.id.fragListing_btnNextpage)
-    Button btnNextpage;
+    @BindView(R.id.fragListing_btnNextPage) Button btnNextPage;
+    @BindView(R.id.fragListing_btnPreviousPage) Button btnPreviousPage;
+    @BindView(R.id.fragListing_tvNumPage) TextView tvNumPage;
 
-    private static final int solNumberMax = 1388; //Número máximo al 26/08/2016
-    private int solNumber;
-
-
+    //Para la consulta del servicio web con Retrofit
+    private ApodService apodService;
+    //Para almacenar la url de la imagen seleccionada
+    private String urlImageMarsRover;
     //Para usar la base de datos
     private PhotoDataSource photoDataSource;
     private CameraDataSource cameraDataSource;
     private RoverDataSource roverDataSource;
     private CameraSecondaryDataSource cameraSecondaryDataSource;
+    //Número máximo "sol" al 26/08/2016
+    private static final int solNumberMax = 1388;
+    //Esta variable tomará un valor aleatorio entre 1 y 1388 (solNumberMax)
+    private int solNumber;
+    //Contador de páginas
+    private int numPage = 1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-
         //Inflamos la vista
         View view = inflater.inflate(R.layout.fragment_listing,container,false);
+        //Acceso a controles del fragment
         ButterKnife.bind(this,view);
 
         //Creamos las instancias para acceder a las tablas
@@ -74,12 +83,6 @@ public class FragmentListing extends Fragment{
         roverDataSource = new RoverDataSource(getActivity());
         cameraSecondaryDataSource = new CameraSecondaryDataSource(getActivity());
 
-        //Generamos un número aleatorio entre 1 y solNumberMax para que sea el solNumber
-        Random random = new Random();
-        solNumber = (int)(random.nextDouble() * (solNumberMax +1));
-        if(solNumberMax == 0)
-            solNumber = 1;
-
         return view;
     }
 
@@ -87,14 +90,25 @@ public class FragmentListing extends Fragment{
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Deshabilitamos el botón de "Anterior" cuando es la primera página
+        if(Integer.parseInt(tvNumPage.getText().toString()) == 1) {
+            btnPreviousPage.setEnabled(false);
+            btnPreviousPage.setText("");
+        }
+
+        //Generamos un número aleatorio entre 1 y solNumberMax para que sea el solNumber
+        Random random = new Random();
+        solNumber = (int)(random.nextDouble() * (solNumberMax +1));
+        if(solNumberMax == 0) solNumber = 1;
+
+        //Establecemos el layout en que se mostrará nuestro listado
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),2);
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(10,StaggeredGridLayoutManager.VERTICAL);
-        //marsRoverListingRecycler.setLayoutManager(LinearLayoutManager);
         marsRoverListingRecycler.setLayoutManager(gridLayoutManager);
-        //marsRoverListingRecycler.setLayoutManager(staggeredGridLayoutManager);
 
+        ////AQUI VOY
         //Para manejar el click en la foto
         final NasaApodAdapter nasaApodAdapter = new NasaApodAdapter();
         nasaApodAdapter.setOnItemClickListener(new NasaApodAdapter.OnItemClickListener(){
@@ -144,7 +158,7 @@ public class FragmentListing extends Fragment{
             }
         });
 
-        ApodService apodService = Data.getRetrofitInstance().create(ApodService.class);
+        apodService = Data.getRetrofitInstance().create(ApodService.class);
 
         apodService.getTodayMarsRovertWithQuery(solNumber, BuildConfig.NASA_API_KEY).enqueue(new Callback<MarsRoverResponse>() {
             @Override
@@ -197,8 +211,27 @@ public class FragmentListing extends Fragment{
     }
     //endregion
 
-    @OnClick(R.id.fragListing_btnNextpage)
+    @OnClick(R.id.fragListing_btnNextPage)
     public void onClickBtnNextPage(){
+        numPage++;
+        tvNumPage.setText(String.valueOf(numPage));
+        if(!btnPreviousPage.isEnabled()) {
+            btnPreviousPage.setEnabled(true);
+            btnPreviousPage.setText(getString(R.string.fragListing_btnPreviousPage));
+        }
+        //apodServiceEnqueue(apodService);
+    }
+
+    @OnClick(R.id.fragListing_btnPreviousPage)
+    public void onClickBtnPreviousPage(){
+        numPage--;
+        tvNumPage.setText(String.valueOf(numPage));
+
+        if(numPage == 1) {
+            btnPreviousPage.setText("");
+            btnPreviousPage.setEnabled(false);
+        }
+
         //apodServiceEnqueue(apodService);
     }
 }

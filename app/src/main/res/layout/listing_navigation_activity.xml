@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listNav_toolbar"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary3"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
         <LinearLayout
@@ -27,7 +27,6 @@
             android:layout_height="match_parent">
 
             <FrameLayout
-                android:layout_weight="1"
                 android:id="@+id/listNav_FragmentFolder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -38,6 +37,7 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
+        navigation:itemTextColor="@color/colorPrimary5"
         navigation:menu="@menu/listing_navigation_menu"
         navigation:headerLayout="@layout/listing_navigation_header"
         android:layout_gravity="start"

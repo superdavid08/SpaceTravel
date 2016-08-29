@@ -8,8 +8,7 @@
         android:layout_gravity="center"
         android:id="@+id/header_sdvUserImage"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_margin="15dp" />
+        android:layout_height="120dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -17,29 +16,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <View
-            android:paddingTop="5dp"
-            android:background="@color/colorPrimary"
+        <LinearLayout
+            android:gravity="center"
+            android:background="@color/colorSecondary1"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="2dp" />
+            android:layout_height="60dp">
 
-        <TextView
-            android:textStyle="bold"
-            android:textColor="@color/cardview_dark_background"
-            android:id="@+id/header_tvUserName"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"/>
-        
-        <View
-            android:paddingTop="5dp"
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="2dp" />
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/colorSecondary5"
+                android:id="@+id/header_tvUserName"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-
 
 </LinearLayout>
