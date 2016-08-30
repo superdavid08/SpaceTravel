@@ -28,7 +28,7 @@
             android:textSize="25sp"
             android:text="1"
             android:id="@+id/fragListing_tvNumPage"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content" />
 
         <Button

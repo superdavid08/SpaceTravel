@@ -3,14 +3,13 @@ package elsuper.david.com.spacetravel.fragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +20,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -53,6 +51,8 @@ public class FragmentListing extends Fragment{
     @BindView(R.id.fragListing_btnPreviousPage) Button btnPreviousPage;
     @BindView(R.id.fragListing_tvNumPage) TextView tvNumPage;
 
+    //Adaptador
+    private final NasaApodAdapter nasaApodAdapter = new NasaApodAdapter();
     //Para la consulta del servicio web con Retrofit
     private ApodService apodService;
     //Para almacenar la url de la imagen seleccionada
@@ -104,16 +104,15 @@ public class FragmentListing extends Fragment{
         //Establecemos el layout en que se mostrará nuestro listado
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),2);
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(10,StaggeredGridLayoutManager.VERTICAL);
         marsRoverListingRecycler.setLayoutManager(gridLayoutManager);
 
-        ////AQUI VOY
-        //Para manejar el click en la foto
-        final NasaApodAdapter nasaApodAdapter = new NasaApodAdapter();
+        //Manejamos el click en la foto. Nos envía al detalle
         nasaApodAdapter.setOnItemClickListener(new NasaApodAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(Photo photo) {
+                //Url de la foto seleccionada
+                urlImageMarsRover = photo.getImgSrc();
+
                 Intent intent = new Intent(view.getContext(),DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("key_photo",photo);
@@ -122,15 +121,18 @@ public class FragmentListing extends Fragment{
             }
         });
 
-        //Se agrega el click largo
+        //Manejamos el click largo en la foto. Para agregar a favoritos
         nasaApodAdapter.setOnItemLongClickListener(new NasaApodAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(final Photo photo) {
                 //Si no existe la foto en la lista de favoritos
                 if(photoDataSource.getPhoto(photo.getId()) == null) {
+                    //Url de la foto seleccionada
+                    urlImageMarsRover = photo.getImgSrc();
+
                     new AlertDialog.Builder(getActivity())
-                            .setTitle("Agregar a Favoritos")
-                            .setMessage("Deseas agregarlo a tu lista de favoritos?")
+                            .setTitle(getString(R.string.fragments_msgAddToFavorities))
+                            .setMessage(String.format(getString(R.string.fragments_msgQuestionAdd), photo.getId()))
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -158,14 +160,35 @@ public class FragmentListing extends Fragment{
             }
         });
 
+        //Instanciamos el servicio apod para poder usar Retrofit
         apodService = Data.getRetrofitInstance().create(ApodService.class);
 
-        apodService.getTodayMarsRovertWithQuery(solNumber, BuildConfig.NASA_API_KEY).enqueue(new Callback<MarsRoverResponse>() {
+        //LLamamos al método que establece su callback
+        apodServiceEnqueue(apodService);
+    }
+
+    private void apodServiceEnqueue(ApodService apodService) {
+
+        //Consumimos el servicio web y definimos su callback
+        apodService.getTodayMarsRovertWithAllQuery(solNumber,numPage, BuildConfig.NASA_API_KEY)
+                .enqueue(new Callback<MarsRoverResponse>() {
             @Override
             public void onResponse(Call<MarsRoverResponse> call, Response<MarsRoverResponse> response) {
-                nasaApodAdapter.setMarsPhotos(response.body().getPhotos());
-                marsRoverListingRecycler.setAdapter(nasaApodAdapter);
-                Toast.makeText(getActivity(),String.valueOf(solNumber),Toast.LENGTH_SHORT).show();
+                if(response.body().getPhotos().size() > 0) {
+                    //Seteamos el listado de fotos en el adaptador
+                    nasaApodAdapter.setMarsPhotos(response.body().getPhotos());
+                    marsRoverListingRecycler.setAdapter(nasaApodAdapter);
+                }
+                else{
+                    Snackbar.make(getActivity().findViewById(android.R.id.content),
+                            String.format(getString(R.string.fragListing_tvEndOfListing), solNumber),
+                            Snackbar.LENGTH_LONG).show();
+
+                    nasaApodAdapter.setMarsPhotos(null);
+                    marsRoverListingRecycler.setAdapter(null);
+                    btnNextPage.setText("");
+                    btnNextPage.setEnabled(false);
+                }
             }
 
             @Override
@@ -173,9 +196,6 @@ public class FragmentListing extends Fragment{
 
             }
         });
-    }
-
-    private void apodServiceEnqueue(ApodService apodService) {
     }
 
     //region Menú
@@ -196,7 +216,7 @@ public class FragmentListing extends Fragment{
 
         switch (item.getItemId()){
             case R.id.menu_shareListRover:
-                shareText("Lista de fotos");
+                shareText(urlImageMarsRover);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -207,31 +227,43 @@ public class FragmentListing extends Fragment{
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+        //Compartimos la url de la imagen en la aplicación que el usuario seleccione
         startActivity(Intent.createChooser(shareIntent,getString(R.string.fragments_msgShare)));
     }
     //endregion
 
+    //region Clicks de los controles
     @OnClick(R.id.fragListing_btnNextPage)
     public void onClickBtnNextPage(){
-        numPage++;
-        tvNumPage.setText(String.valueOf(numPage));
+        //Se muestra la siguiente página
+        if(btnNextPage.isEnabled()) {
+            numPage++;
+            tvNumPage.setText(String.valueOf(numPage));
+            apodServiceEnqueue(apodService);
+        }
+
         if(!btnPreviousPage.isEnabled()) {
             btnPreviousPage.setEnabled(true);
             btnPreviousPage.setText(getString(R.string.fragListing_btnPreviousPage));
         }
-        //apodServiceEnqueue(apodService);
     }
 
     @OnClick(R.id.fragListing_btnPreviousPage)
     public void onClickBtnPreviousPage(){
+        //Se muestra la página prevía
         numPage--;
         tvNumPage.setText(String.valueOf(numPage));
+        apodServiceEnqueue(apodService);
 
         if(numPage == 1) {
             btnPreviousPage.setText("");
             btnPreviousPage.setEnabled(false);
         }
 
-        //apodServiceEnqueue(apodService);
+        if(!btnNextPage.isEnabled()) {
+            btnNextPage.setEnabled(true);
+            btnNextPage.setText(getString(R.string.fragListing_btnNextPage));
+        }
     }
+    //endregion
 }

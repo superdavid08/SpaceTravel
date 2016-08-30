@@ -133,6 +133,7 @@ public class FragmentApod extends Fragment {
 
                 //Asignamos la información del Apod recibido a los controles y variables de clase
                 if (response.body().getMediaType().equals("image")) { //Si es imagen
+                    //Url de la foto
                     urlImageApod = response.body().getHdurl();
                     Picasso.with(getActivity()).load(response.body().getHdurl()).into(imageApod);
                     isVideo = false;
@@ -208,7 +209,6 @@ public class FragmentApod extends Fragment {
     //region Clicks de los controles
     @OnClick(R.id.fragApod_btnSelectDate)
     public void onClickBtnSelectDate(){
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
 

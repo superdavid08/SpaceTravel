@@ -6,34 +6,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import elsuper.david.com.spacetravel.BuildConfig;
 import elsuper.david.com.spacetravel.DetailActivity;
 import elsuper.david.com.spacetravel.R;
-import elsuper.david.com.spacetravel.data.ApodService;
-import elsuper.david.com.spacetravel.data.Data;
+import elsuper.david.com.spacetravel.model.Apod;
 import elsuper.david.com.spacetravel.model.Camera;
 import elsuper.david.com.spacetravel.model.CameraSecondary;
-import elsuper.david.com.spacetravel.model.MarsRoverResponse;
+import elsuper.david.com.spacetravel.model.Favoritie;
 import elsuper.david.com.spacetravel.model.Photo;
 import elsuper.david.com.spacetravel.model.Rover;
+import elsuper.david.com.spacetravel.sql.ApodDataSource;
 import elsuper.david.com.spacetravel.sql.CameraDataSource;
 import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
 import elsuper.david.com.spacetravel.sql.PhotoDataSource;
 import elsuper.david.com.spacetravel.sql.RoverDataSource;
 import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaApodAdapter;
+import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaFavoritieAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +48,7 @@ public class FragmentFavorities extends Fragment {
     private CameraDataSource cameraDataSource;
     private RoverDataSource roverDataSource;
     private CameraSecondaryDataSource cameraSecondaryDataSource;
+    private ApodDataSource apodDataSource;
 
 
     @Nullable
@@ -64,6 +63,7 @@ public class FragmentFavorities extends Fragment {
         cameraDataSource = new CameraDataSource(getActivity());
         roverDataSource = new RoverDataSource(getActivity());
         cameraSecondaryDataSource = new CameraSecondaryDataSource(getActivity());
+        apodDataSource = new ApodDataSource(getActivity());
 
         return view;
     }
@@ -74,43 +74,55 @@ public class FragmentFavorities extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         marsRoverFavoritiesRecycler.setLayoutManager(linearLayoutManager);
+        //linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);//
 
-        final NasaApodAdapter nasaApodAdapter = new NasaApodAdapter();
+
+        //final NasaApodAdapter nasaApodAdapter = new NasaApodAdapter();
+        final NasaFavoritieAdapter nasaFavoritieAdapter = new NasaFavoritieAdapter();
 
         //Llenamos el adapter
-        nasaApodAdapter.setMarsPhotos(getPhotos());
-        marsRoverFavoritiesRecycler.setAdapter(nasaApodAdapter);
+        //nasaApodAdapter.setMarsPhotos(getPhotos());
+        nasaFavoritieAdapter.setFavorities(getFavorities());
+        marsRoverFavoritiesRecycler.setAdapter(nasaFavoritieAdapter);
 
         //Para manejar el click en la foto
-        nasaApodAdapter.setOnItemClickListener(new NasaApodAdapter.OnItemClickListener(){
+        nasaFavoritieAdapter.setOnItemClickListener(new NasaFavoritieAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(Photo photo) {
-                Intent intent = new Intent(getActivity(),DetailActivity.class);
+            public void onItemClick(Favoritie favoritie) {
+                /*Intent intent = new Intent(getActivity(),DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("key_photo",photo);
                 intent.putExtra("key_bundle",bundle);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 
         //Se agrega el click largo
-        nasaApodAdapter.setOnItemLongClickListener(new NasaApodAdapter.OnItemLongClickListener() {
+        nasaFavoritieAdapter.setOnItemLongClickListener(new NasaFavoritieAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(final Photo photo) {
+            public void onItemLongClick(final Favoritie favoritie) {
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Eliminar Favorito")
                         .setMessage("Deseas eliminarlo de tu lista de favoritos?")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //Eliminamos el objeto de la base de datos
-                                cameraSecondaryDataSource.deleteCamerasSecondariesByIdPhoto(photo.getId());
-                                roverDataSource.deleteRoversByIdPhoto(photo.getId());
-                                cameraDataSource.deleteCamerasByIdPhoto(photo.getId());
-                                photoDataSource.deletePhoto(photo.getId());
-                                //Recargamos la lista
-                                nasaApodAdapter.setMarsPhotos(getPhotos());
-                                marsRoverFavoritiesRecycler.setAdapter(nasaApodAdapter);
+
+                                if(favoritie.getIsApod()){
+                                    Apod apod = apodDataSource.getApod(favoritie.getTitle(),favoritie.getDate());
+                                    //Eliminamos el objeto de la base de datos
+                                    apodDataSource.deleteApod(1);//TODO
+                                }
+                                else{//Si es una foto del Mars Rovert
+                                    //Eliminamos el objeto de la base de datos
+                                    cameraSecondaryDataSource.deleteCamerasSecondariesByIdPhoto(favoritie.getId());
+                                    roverDataSource.deleteRoversByIdPhoto(favoritie.getId());
+                                    cameraDataSource.deleteCamerasByIdPhoto(favoritie.getId());
+                                    photoDataSource.deletePhoto(favoritie.getId());
+                                    //Recargamos la lista
+                                    nasaFavoritieAdapter.setFavorities(getFavorities());
+                                    marsRoverFavoritiesRecycler.setAdapter(nasaFavoritieAdapter);
+                                }
                             }
                         }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
@@ -122,8 +134,14 @@ public class FragmentFavorities extends Fragment {
         });
     }
 
-    private List<Photo> getPhotos() {
-        //Consultamos los datos en la base
+    private List<Favoritie> getFavorities() {
+        //Aqui se guardarán todos los favoritos
+        List<Favoritie> favoritiesList = new ArrayList<>();
+
+        /**************************************************************/
+        /* Consultamos los datos en la base                           */
+        /**************************************************************/
+        //Primero las fotos del Rover
         List<Photo> photoList = photoDataSource.getAllPhotos();
         for (Photo photo: photoList) {
             Camera camera = cameraDataSource.getCamera(photo.getId());
@@ -135,6 +153,32 @@ public class FragmentFavorities extends Fragment {
             Rover rover = roverDataSource.getRover(photo.getId());
             rover.setCameras(cameraSecondaryList);
         }
-        return photoList;
+
+        //Los agregamos a Favoritos
+        for (Photo photo: photoList) {
+            Favoritie favoritie = new Favoritie();
+            favoritie.setIsApod(false);
+            favoritie.setId(photo.getId());
+            favoritie.setTitle(photo.getCamera().getFullName());
+            favoritie.setDate(photo.getEarthDate());
+            favoritie.setUrl(photo.getImgSrc());
+            favoritiesList.add(favoritie);
+        }
+
+        //También los Apod
+        List<Apod> apodList = apodDataSource.getAllApods();
+
+        //Los agregamos a Favoritos
+        for (Apod apod: apodList) {
+            Favoritie favoritie = new Favoritie();
+            favoritie.setIsApod(true);
+            favoritie.setId(0);
+            favoritie.setTitle(apod.getTitle());
+            favoritie.setDate(apod.getDate());
+            favoritie.setUrl(apod.getHdurl());
+            favoritiesList.add(favoritie);
+        }
+
+        return favoritiesList;
     }
 }

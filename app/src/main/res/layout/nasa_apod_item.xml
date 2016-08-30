@@ -5,18 +5,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="1dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:id="@+id/item_sdvImage"
         android:layout_gravity="center_horizontal"
         fresco:actualImageScaleType="fitXY" />
 
     <TextView
+        android:text="hgjhgj"
         android:layout_gravity="bottom|center"
-        android:textSize="@dimen/standard_textSize"
         android:layout_margin="10dp"
         android:textStyle="bold"
         android:id="@+id/item_tvTitle"

@@ -8,8 +8,9 @@
     <string name="fragApod_msgInvalidDay">Invalid day</string>
     <string name="fragments_msgAlreadyExist">The element already exists in the favorities list</string>
     <string name="fragments_msgAddToFavorities">Add to Favorities</string>
-    <string name="fragments_msgQuestionAdd" formatted="false">Deseas agregar "%s" a tu lista de favoritos?</string>
+    <string name="fragments_msgQuestionAdd" formatted="false">Do  you want to add the image \"%s\" to your list of favorities?</string>
     <string name="fragListing_btnNextPage">Next</string>
     <string name="fragListing_btnPreviousPage">Previous</string>
     <string name="fragApod_btnSelectDate">Select another date</string>
+    <string name="fragListing_tvEndOfListing" formatted="false">End of listing Sol %s</string>
 </resources>
