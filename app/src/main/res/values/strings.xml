@@ -8,9 +8,20 @@
     <string name="fragApod_msgInvalidDay">Invalid day</string>
     <string name="fragments_msgAlreadyExist">The element already exists in the favorities list</string>
     <string name="fragments_msgAddToFavorities">Add to Favorities</string>
-    <string name="fragments_msgQuestionAdd" formatted="false">Do  you want to add the image \"%s\" to your list of favorities?</string>
+    <string name="fragments_msgQuestionAdd" formatted="false">Do you want to add the image \"%s\" to your list of favorities?</string>
     <string name="fragListing_btnNextPage">Next</string>
     <string name="fragListing_btnPreviousPage">Previous</string>
     <string name="fragApod_btnSelectDate">Select another date</string>
     <string name="fragListing_tvEndOfListing" formatted="false">End of listing Sol %s</string>
+    <string name="fragments_msgDeleteFavorities">Delete Favorite</string>
+    <string name="fragments_msgQuestionDelete" formatted="false">Do you want to delete the image \"%s\" of your favorities list?</string>
+    <string name="detailEarthDate">Earth date:</string>
+    <string name="detail_tvCameraName">Name:</string>
+    <string name="detail_tvCameraFullName">Full name:</string>
+    <string name="detail_tvCameraTitle">Camera</string>
+    <string name="detail_tvRoverName">Name:</string>
+    <string name="detail_tvRoverLandingDate">Landing:</string>
+    <string name="detail_tvRoverMaxSol">Max Sol:</string>
+    <string name="detail_tvRoverMaxDate">Max Date:</string>
+    <string name="detail_tvRoverTotalPhotos">Total Photos:</string>
 </resources>

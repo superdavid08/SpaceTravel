@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 public class Apod implements Serializable {
 
+    @SerializedName("id")
+    private Integer id;
     @SerializedName("copyright")
     private String copyright;
     @SerializedName("date")
@@ -21,6 +23,14 @@ public class Apod implements Serializable {
     private String title;
     @SerializedName("url")
     private String url;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCopyright() {
         return copyright;

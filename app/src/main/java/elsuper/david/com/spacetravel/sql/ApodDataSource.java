@@ -58,6 +58,7 @@ public class ApodDataSource {
         //Agregamos cada elemento del cursor a la lista
         while(cursor.moveToNext()){
             Apod modelApod = new Apod();
+            modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
             modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
             modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
             modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));
@@ -102,6 +103,7 @@ public class ApodDataSource {
 
         //Obtenemos el primer registro del cursor
         if(cursor.moveToFirst()){
+            modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
             modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
             modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
             modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));
@@ -135,6 +137,7 @@ public class ApodDataSource {
 
         //Obtenemos el primer registro del cursor
         if(cursor.moveToFirst()){
+            modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
             modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
             modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
             modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));

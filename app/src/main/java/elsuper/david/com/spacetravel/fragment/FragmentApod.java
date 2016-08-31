@@ -131,37 +131,39 @@ public class FragmentApod extends Fragment {
             @Override
             public void onResponse(Call<Apod> call, Response<Apod> response) {
 
-                //Asignamos la información del Apod recibido a los controles y variables de clase
-                if (response.body().getMediaType().equals("image")) { //Si es imagen
-                    //Url de la foto
-                    urlImageApod = response.body().getHdurl();
-                    Picasso.with(getActivity()).load(response.body().getHdurl()).into(imageApod);
-                    isVideo = false;
-                } else { //Si es video
-                    urlVideo = response.body().getUrl();
-                    imageApod.setImageResource(R.drawable.play);
-                    isVideo = true;
+                if(response != null) {
+                    //Asignamos la información del Apod recibido a los controles y variables de clase
+                    if (response.body().getMediaType().equals("image")) { //Si es imagen
+                        //Url de la foto
+                        urlImageApod = response.body().getHdurl();
+                        Picasso.with(getActivity()).load(response.body().getHdurl()).into(imageApod);
+                        isVideo = false;
+                    } else { //Si es video
+                        urlVideo = response.body().getUrl();
+                        imageApod.setImageResource(R.drawable.play);
+                        isVideo = true;
+                    }
+
+                    tvDate.setText(response.body().getDate());
+                    tvTitle.setText(response.body().getTitle());
+                    tvExplanation.setText(response.body().getExplanation());
+
+                    //No siempre viene con copyright
+                    String copyright = TextUtils.isEmpty(response.body().getCopyright()) ? "" :
+                            response.body().getCopyright();
+                    tvCopyright.setText(copyright);
+
+                    //Construimos el objeto apod de clase por si el usuario decide agregarlo a favoritos
+                    modelApod = new Apod();
+                    modelApod.setCopyright(copyright);
+                    modelApod.setDate(response.body().getDate());
+                    modelApod.setExplanation(response.body().getExplanation());
+                    modelApod.setHdurl(response.body().getHdurl());
+                    modelApod.setMediaType(response.body().getMediaType());
+                    modelApod.setServiceVersion(response.body().getServiceVersion());
+                    modelApod.setTitle(response.body().getTitle());
+                    modelApod.setUrl(response.body().getUrl());
                 }
-
-                tvDate.setText(response.body().getDate());
-                tvTitle.setText(response.body().getTitle());
-                tvExplanation.setText(response.body().getExplanation());
-
-                //No siempre viene con copyright
-                String copyright = TextUtils.isEmpty(response.body().getCopyright()) ? "" :
-                        response.body().getCopyright();
-                tvCopyright.setText(copyright);
-
-                //Construimos el objeto apod de clase por si el usuario decide agregarlo a favoritos
-                modelApod = new Apod();
-                modelApod.setCopyright(copyright);
-                modelApod.setDate(response.body().getDate());
-                modelApod.setExplanation(response.body().getExplanation());
-                modelApod.setHdurl(response.body().getHdurl());
-                modelApod.setMediaType(response.body().getMediaType());
-                modelApod.setServiceVersion(response.body().getServiceVersion());
-                modelApod.setTitle(response.body().getTitle());
-                modelApod.setUrl(response.body().getUrl());
             }
 
             @Override
@@ -230,9 +232,10 @@ public class FragmentApod extends Fragment {
         datePickerDialog.setTitle("Selecciona una fecha");
         //Sólo puede seleccionar hasta la fecha actual
         datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.add(calendar.YEAR,-6);
-        datePickerDialog.getDatePicker().setMinDate(calendar2.getTimeInMillis());
+        Calendar calendarTemp = Calendar.getInstance();
+        //Le restamos diez años a la fecha actual para ponerla como fecha mínima de selección
+        calendarTemp.add(calendar.YEAR,-10);
+        datePickerDialog.getDatePicker().setMinDate(calendarTemp.getTimeInMillis());
     }
 
     @OnClick(R.id.fragApod_image)

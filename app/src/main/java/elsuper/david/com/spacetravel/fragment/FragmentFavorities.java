@@ -18,6 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import elsuper.david.com.spacetravel.DetailActivity;
+import elsuper.david.com.spacetravel.FavoritieDetailActivity;
 import elsuper.david.com.spacetravel.R;
 import elsuper.david.com.spacetravel.model.Apod;
 import elsuper.david.com.spacetravel.model.Camera;
@@ -89,11 +90,11 @@ public class FragmentFavorities extends Fragment {
         nasaFavoritieAdapter.setOnItemClickListener(new NasaFavoritieAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(Favoritie favoritie) {
-                /*Intent intent = new Intent(getActivity(),DetailActivity.class);
+                Intent intent = new Intent(getActivity(), FavoritieDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("key_photo",photo);
-                intent.putExtra("key_bundle",bundle);
-                startActivity(intent);*/
+                bundle.putSerializable("key_imageFavorities",favoritie);
+                intent.putExtra("key_bundleFavorities",bundle);
+                startActivity(intent);
             }
         });
 
@@ -101,17 +102,24 @@ public class FragmentFavorities extends Fragment {
         nasaFavoritieAdapter.setOnItemLongClickListener(new NasaFavoritieAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(final Favoritie favoritie) {
+
+                //Para el mensaje de borrado
+                String title;
+                if(favoritie.getIsApod()) title = favoritie.getTitle();
+                else title = String.valueOf(favoritie.getId());
+
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Eliminar Favorito")
-                        .setMessage("Deseas eliminarlo de tu lista de favoritos?")
+                        .setTitle(getString(R.string.fragments_msgDeleteFavorities))
+                        .setMessage(String.format(getString(R.string.fragments_msgQuestionDelete), title))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                //Si es un apod
                                 if(favoritie.getIsApod()){
+                                    //Consultamos el favorito
                                     Apod apod = apodDataSource.getApod(favoritie.getTitle(),favoritie.getDate());
                                     //Eliminamos el objeto de la base de datos
-                                    apodDataSource.deleteApod(1);//TODO
+                                    apodDataSource.deleteApod(apod.getId());
                                 }
                                 else{//Si es una foto del Mars Rovert
                                     //Eliminamos el objeto de la base de datos
@@ -119,10 +127,12 @@ public class FragmentFavorities extends Fragment {
                                     roverDataSource.deleteRoversByIdPhoto(favoritie.getId());
                                     cameraDataSource.deleteCamerasByIdPhoto(favoritie.getId());
                                     photoDataSource.deletePhoto(favoritie.getId());
-                                    //Recargamos la lista
-                                    nasaFavoritieAdapter.setFavorities(getFavorities());
-                                    marsRoverFavoritiesRecycler.setAdapter(nasaFavoritieAdapter);
                                 }
+
+                                //Recargamos la lista
+                                nasaFavoritieAdapter.setFavorities(getFavorities());
+                                marsRoverFavoritiesRecycler.setAdapter(nasaFavoritieAdapter);
+
                             }
                         }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
@@ -172,7 +182,7 @@ public class FragmentFavorities extends Fragment {
         for (Apod apod: apodList) {
             Favoritie favoritie = new Favoritie();
             favoritie.setIsApod(true);
-            favoritie.setId(0);
+            favoritie.setId(apod.getId());
             favoritie.setTitle(apod.getTitle());
             favoritie.setDate(apod.getDate());
             favoritie.setUrl(apod.getHdurl());

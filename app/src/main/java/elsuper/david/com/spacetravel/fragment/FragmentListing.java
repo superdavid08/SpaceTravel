@@ -174,7 +174,7 @@ public class FragmentListing extends Fragment{
                 .enqueue(new Callback<MarsRoverResponse>() {
             @Override
             public void onResponse(Call<MarsRoverResponse> call, Response<MarsRoverResponse> response) {
-                if(response.body().getPhotos().size() > 0) {
+                if(response != null && response.body().getPhotos().size() > 0) {
                     //Seteamos el listado de fotos en el adaptador
                     nasaApodAdapter.setMarsPhotos(response.body().getPhotos());
                     marsRoverListingRecycler.setAdapter(nasaApodAdapter);

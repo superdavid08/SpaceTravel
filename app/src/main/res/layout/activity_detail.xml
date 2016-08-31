@@ -5,198 +5,306 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="elsuper.david.com.spacetravel.DetailActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_toolbar"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        xmlns:fresco="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="elsuper.david.com.spacetravel.DetailActivity">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:id="@+id/detail_sdvImage"
-            android:layout_gravity="center_horizontal"
-            fresco:actualImageScaleType="fitXY" />
-
-        <TextView
-            android:layout_gravity="bottom|center"
-            android:textSize="12sp"
-            android:layout_margin="10dp"
-            android:textStyle="bold"
-            android:id="@+id/detail_tvTitle"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cardview_light_background"/>
+            android:id="@+id/detail_toolbar"
+            android:background="@color/colorPrimary3"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    </android.support.v7.widget.CardView>
-
-    <LinearLayout
-        android:padding="10dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:fresco="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
-            <TextView
-                android:layout_weight=".7"
-                android:textStyle="bold"
-                android:text="Id: "
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_margin="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/detail_tvId"
-                android:layout_weight=".3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_weight=".7"
-                android:textStyle="bold"
-                android:text="Sol: "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/detail_tvSol"
-                android:layout_weight=".3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_weight=".7"
-                android:textStyle="bold"
-                android:text="Earth date: "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/detail_tvEarthDate"
-                android:layout_weight=".3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="Camera"
+                android:layout_height="250dp"
+                android:id="@+id/detail_sdvImage"
                 android:layout_gravity="center_horizontal"
-                android:textSize="12sp"
+                fresco:actualImageScaleType="fitXY" />
+
+            <TextView
+                android:textColor="@color/cardview_light_background"
+                android:layout_margin="10dp"
+                android:gravity="right"
                 android:textStyle="bold"
+                android:text="Id:"
+                android:id="@+id/detail_tvId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textColor="@color/cardview_light_background"
+                android:layout_margin="10dp"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:text="Sol:"
+                android:id="@+id/detail_tvSol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textColor="@color/cardview_light_background"
+                android:layout_margin="10dp"
+                android:layout_gravity="bottom|center"
+                android:textStyle="bold"
+                android:text="@string/detailEarthDate"
+                android:id="@+id/detail_tvEarthDate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cardview_dark_background"/>
-        </LinearLayout>
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.CardView>
+
         <LinearLayout
+            android:padding="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_weight=".7"
-                android:textStyle="bold"
-                android:text="Id: "
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight=".51"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/detail_tvCameraId"
-                android:layout_weight=".3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:layout_gravity="center"
+                    android:text="@string/detail_tvCameraTitle"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorSecondary4"/>
 
-            <TextView
-                android:layout_weight=".7"
-                android:textStyle="bold"
-                android:text="Name: "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/detail_tvCameraName"
-                android:layout_weight=".3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="Id: "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-            <TextView
-                android:layout_weight=".7"
-                android:textStyle="bold"
-                android:text="Rover Id: "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/detail_tvCameraId"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/detail_tvCameraRoverId"
-                android:layout_weight=".3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="@string/detail_tvCameraName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-            <TextView
-                android:layout_weight=".7"
-                android:textStyle="bold"
-                android:text="Full Name: "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/detail_tvCameraName"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/detail_tvCameraFullName"
-                android:layout_weight=".3"
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="Rover Id: "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/detail_tvCameraRoverId"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="@string/detail_tvCameraFullName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/detail_tvCameraFullName"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight=".98"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
+
+                <View
+                    android:background="@color/colorPrimary5"
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight=".51"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text="Rover"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorSecondary25"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="Id: "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/detail_tvRoverId"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="@string/detail_tvRoverName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/detail_tvRoverName"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="@string/detail_tvRoverLandingDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:textSize="13dp"
+                        android:id="@+id/detail_tvRoverLandingDate"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="@string/detail_tvRoverMaxSol"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/detail_tvRoverMaxSol"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="@string/detail_tvRoverMaxDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:textSize="13dp"
+                        android:id="@+id/detail_tvRoverMaxDate"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight=".5"
+                        android:textStyle="bold"
+                        android:text="@string/detail_tvRoverTotalPhotos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/detail_tvRoverTotalPhotos"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
 </ScrollView>
