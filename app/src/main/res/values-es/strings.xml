@@ -25,4 +25,7 @@
     <string name="detail_tvRoverMaxSol">Máx Sol:</string>
     <string name="detail_tvRoverMaxDate">Máx Fecha:</string>
     <string name="detail_tvRoverTotalPhotos">Total de Fotos:</string>
+    <string name="fragments_msgSuccessfullyAdded">Agregado exitosamente</string>
+    <string name="fragments_msgSuccessfullyDeleted">Borrado exitoso</string>
+    <string name="fragFavorities_msgEmpty">No hay favoritos</string>
 </resources>

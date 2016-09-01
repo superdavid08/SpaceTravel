@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ import retrofit2.Response;
 public class FragmentFavorities extends Fragment {
 
     @BindView(R.id.fragFavorities_marsRover) RecyclerView marsRoverFavoritiesRecycler;
+    @BindView(R.id.fragFavorities_tvUserName) TextView tvUserName;
 
     //Para usar la base de datos
     private PhotoDataSource photoDataSource;
@@ -50,6 +53,16 @@ public class FragmentFavorities extends Fragment {
     private RoverDataSource roverDataSource;
     private CameraSecondaryDataSource cameraSecondaryDataSource;
     private ApodDataSource apodDataSource;
+
+    public static FragmentFavorities newInstance(String userName)
+    {
+        FragmentFavorities f = new FragmentFavorities();
+        Bundle b = new Bundle();
+        b.putString("key_userName",userName);
+        f.setArguments(b);
+
+        return f;
+    }
 
 
     @Nullable
@@ -73,6 +86,9 @@ public class FragmentFavorities extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        String userName = getArguments().getString("key_userName");
+        tvUserName.setText(userName);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         marsRoverFavoritiesRecycler.setLayoutManager(linearLayoutManager);
         //linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);//
@@ -83,7 +99,12 @@ public class FragmentFavorities extends Fragment {
 
         //Llenamos el adapter
         //nasaApodAdapter.setMarsPhotos(getPhotos());
-        nasaFavoritieAdapter.setFavorities(getFavorities());
+        List<Favoritie> favoritiesList = getFavorities();
+
+        if(favoritiesList.size() == 0)
+            tvUserName.setText(getString(R.string.fragFavorities_msgEmpty));
+
+        nasaFavoritieAdapter.setFavorities(favoritiesList);
         marsRoverFavoritiesRecycler.setAdapter(nasaFavoritieAdapter);
 
         //Para manejar el click en la foto
@@ -128,6 +149,9 @@ public class FragmentFavorities extends Fragment {
                                     cameraDataSource.deleteCamerasByIdPhoto(favoritie.getId());
                                     photoDataSource.deletePhoto(favoritie.getId());
                                 }
+
+                                Toast.makeText(getActivity(),getString(R.string.fragments_msgSuccessfullyDeleted),
+                                        Toast.LENGTH_SHORT).show();
 
                                 //Recargamos la lista
                                 nasaFavoritieAdapter.setFavorities(getFavorities());

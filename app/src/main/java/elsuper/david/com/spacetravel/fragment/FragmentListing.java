@@ -146,6 +146,10 @@ public class FragmentListing extends Fragment{
                                     for (CameraSecondary cameraSecondary : cameraSecondaryList) {
                                         cameraSecondaryDataSource.saveCameraSecondary(cameraSecondary, photo.getId());
                                     }
+
+                                    Toast.makeText(getActivity(),getString(R.string.fragments_msgSuccessfullyAdded),
+                                            Toast.LENGTH_SHORT).show();
+
                                 }
                             }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         @Override

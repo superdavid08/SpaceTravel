@@ -251,8 +251,13 @@ public class FragmentApod extends Fragment {
 
     @OnLongClick(R.id.fragApod_image)
     public boolean onLongClickImage(){
-        /*El click largo funciona para agregar el objeto Apod a favoritos*/
 
+        //Si es un video no lo puede poner en favoritos
+        if(isVideo){
+            return true;
+        }
+
+        /*El click largo funciona para agregar el objeto Apod a favoritos*/
         //Si no existe la foto en la lista de favoritos
         if(apodDataSource.getApod(modelApod.getTitle(),modelApod.getDate()) == null) {
             new AlertDialog.Builder(getActivity())
@@ -263,6 +268,8 @@ public class FragmentApod extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             //Guardamos el objeto Apod en la base de datos
                             apodDataSource.saveApod(modelApod);
+                            Toast.makeText(getActivity(),getString(R.string.fragments_msgSuccessfullyAdded),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                 @Override

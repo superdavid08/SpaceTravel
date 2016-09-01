@@ -39,6 +39,8 @@ public class ListingActivity extends AppCompatActivity {
     @BindView(R.id.listNav_view) NavigationView navigationView;
     @BindView(R.id.listNav_drawer) DrawerLayout drawerLayout;
 
+    private String user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +81,10 @@ public class ListingActivity extends AppCompatActivity {
                         //Snackbar.make(findViewById(android.R.id.content), "Mars Rover", Snackbar.LENGTH_SHORT).show();
                         return true;
                     case R.id.navigation_favoriteItem:
-                        getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentFavorities()).commit();
+                        //Mostramos el Fragmen de Perfil y le pasamos el username
+                        FragmentFavorities f = FragmentFavorities.newInstance(user);
+                        getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, f).commit();
+                        //getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentFavorities()).commit();
                         //Snackbar.make(findViewById(android.R.id.content), getString(R.string.listingNavigationMenu_favorities) , Snackbar.LENGTH_SHORT).show();
                         return true;
                     default:
@@ -116,6 +121,7 @@ public class ListingActivity extends AppCompatActivity {
                     userImage.setImageURI("http://graph.facebook.com/" + object.getString("id") + "/picture?type=large");
                     TextView userName = (TextView) findViewById(R.id.header_tvUserName);
                     userName.setText(object.getString("name"));
+                    user = object.getString("name");
 
                     //Log.d("nameFB",object.getString("name"));
                     //Log.d("idFB",object.getString("id"));
