@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Andrés David García Gómez
  */
-public class Favoritie implements Serializable {
+public class Favorite implements Serializable {
 
     @SerializedName("isApod")
     private Boolean isApod;

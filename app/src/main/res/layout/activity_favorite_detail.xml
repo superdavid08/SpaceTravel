@@ -4,12 +4,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="elsuper.david.com.spacetravel.FavoritieDetailActivity">
+    tools:context=".FavoriteDetailActivity">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/favoritieDetail_toolbar"
+        android:id="@+id/favoriteDetail_toolbar"
         android:background="@color/colorPrimary3"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
@@ -25,7 +25,7 @@
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/favoritieDetail_sdvImage"
+            android:id="@+id/favoriteDetail_sdvImage"
             android:layout_gravity="center_horizontal"
             fresco:actualImageScaleType="fitXY" />
 

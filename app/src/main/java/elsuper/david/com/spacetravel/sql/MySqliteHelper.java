@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
  */
 public class MySqliteHelper extends SQLiteOpenHelper {
 
-    private final static String DATABASE_NAME = "space_travel_favorities_db";
+    private final static String DATABASE_NAME = "space_travel_favorites_db";
     private final static int DATABASE_VERSION = 1;
     public final static String COLUMN_ID = BaseColumns._ID;
 

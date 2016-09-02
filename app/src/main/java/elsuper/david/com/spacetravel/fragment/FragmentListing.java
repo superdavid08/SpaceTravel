@@ -131,7 +131,7 @@ public class FragmentListing extends Fragment{
                     urlImageMarsRover = photo.getImgSrc();
 
                     new AlertDialog.Builder(getActivity())
-                            .setTitle(getString(R.string.fragments_msgAddToFavorities))
+                            .setTitle(getString(R.string.fragments_msgAddToFavorites))
                             .setMessage(String.format(getString(R.string.fragments_msgQuestionAdd), photo.getId()))
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
@@ -167,8 +167,10 @@ public class FragmentListing extends Fragment{
         //Instanciamos el servicio apod para poder usar Retrofit
         apodService = Data.getRetrofitInstance().create(ApodService.class);
 
-        //LLamamos al método que establece su callback
-        apodServiceEnqueue(apodService);
+        if(apodService != null) {
+            //LLamamos al método que establece su callback
+            apodServiceEnqueue(apodService);
+        }
     }
 
     private void apodServiceEnqueue(ApodService apodService) {
@@ -202,6 +204,7 @@ public class FragmentListing extends Fragment{
         });
     }
 
+    /*
     //region Menú
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -270,4 +273,5 @@ public class FragmentListing extends Fragment{
         }
     }
     //endregion
+    */
 }

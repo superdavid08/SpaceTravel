@@ -2,7 +2,6 @@ package elsuper.david.com.spacetravel.ui.view.apod.list.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -19,31 +18,34 @@ import elsuper.david.com.spacetravel.model.Photo;
  */
 public class NasaApodViewHolder extends RecyclerView.ViewHolder{
 
-    //Para manejar el click en la foto
+    //Para manejar el click y el click sostenido en la foto
     private NasaApodAdapter.OnItemClickListener onItemListener;
     private NasaApodAdapter.OnItemLongClickListener onItemLongListener;
     private Photo photo;
 
+    //Controles del nasa_apod_item
     @BindView(R.id.item_sdvImage) SimpleDraweeView itemImage;
     @BindView(R.id.item_tvTitle) TextView itemTitle;
 
     public NasaApodViewHolder(View itemView) {
         super(itemView);
+        //Acceso a controles
         ButterKnife.bind(this,itemView);
     }
 
-    //Para manejar el click en la foto
+    //Seteando el click para cada foto
     public void setItemClick(Photo photo, NasaApodAdapter.OnItemClickListener onItemListener){
         this.photo = photo;
         this.onItemListener = onItemListener;
     }
 
+    //Seteando el click sostenido para cada foto
     public void setItemLongClick(Photo photo, NasaApodAdapter.OnItemLongClickListener onItemLongListener){
         this.photo = photo;
         this.onItemLongListener = onItemLongListener;
     }
 
-    //Para manejar el click en la foto
+    //Definiendo los "escucha" para el click y click sostenido
     @OnClick(R.id.item_sdvImage)
     public void onViewClick(View view){
         if(onItemListener != null)

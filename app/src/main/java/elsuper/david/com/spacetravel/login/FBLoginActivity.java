@@ -17,6 +17,9 @@ import butterknife.ButterKnife;
 import elsuper.david.com.spacetravel.ListingActivity;
 import elsuper.david.com.spacetravel.R;
 
+/**
+ * Created by Andrés David García Gómez.
+ */
 public class FBLoginActivity extends AppCompatActivity implements FacebookCallback<LoginResult>{
 
     @BindView(R.id.fb_login_button) LoginButton loginButton;
@@ -32,18 +35,19 @@ public class FBLoginActivity extends AppCompatActivity implements FacebookCallba
         loginButton.registerCallback(callbackManager,this);
 
         if(AccessToken.getCurrentAccessToken() != null)
-            Snackbar.make(findViewById(android.R.id.content), "Login", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(android.R.id.content),
+                    getString(R.string.FB_msgLogin), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        //Snackbar.make(findViewById(android.R.id.content), "Login", Snackbar.LENGTH_SHORT).show();
         startActivity(new Intent(FBLoginActivity.this, ListingActivity.class));
     }
 
     @Override
     public void onCancel() {
-        Snackbar.make(findViewById(android.R.id.content), "Cancel Login", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content),
+                getString(R.string.FB_msgCancelLogin), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

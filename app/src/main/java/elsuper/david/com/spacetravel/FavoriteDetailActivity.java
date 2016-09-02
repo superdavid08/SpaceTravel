@@ -11,13 +11,18 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import elsuper.david.com.spacetravel.model.Favoritie;
-import elsuper.david.com.spacetravel.model.Photo;
+import elsuper.david.com.spacetravel.model.Favorite;
+import elsuper.david.com.spacetravel.sql.ApodDataSource;
+import elsuper.david.com.spacetravel.sql.CameraDataSource;
+import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
+import elsuper.david.com.spacetravel.sql.PhotoDataSource;
+import elsuper.david.com.spacetravel.sql.RoverDataSource;
 
-public class FavoritieDetailActivity extends AppCompatActivity {
+public class FavoriteDetailActivity extends AppCompatActivity {
 
-    @BindView(R.id.favoritieDetail_toolbar) Toolbar toolbar;
-    @BindView(R.id.favoritieDetail_sdvImage) SimpleDraweeView itemImage;
+    //Controles de la Activity
+    @BindView(R.id.favoriteDetail_toolbar) Toolbar toolbar;
+    @BindView(R.id.favoriteDetail_sdvImage) SimpleDraweeView itemImage;
 
     //Para almacenar la url de la imagen seleccionada
     private String urlImage;
@@ -25,20 +30,25 @@ public class FavoritieDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favoritie_detail);
+        setContentView(R.layout.activity_favorite_detail);
+        //Acceso a controles
         ButterKnife.bind(this);
 
+        //Agregando el toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         //Obtenemos los Extras
-        Bundle bundle = getIntent().getExtras().getBundle("key_bundleFavorities");
-        Favoritie favoritie = (Favoritie) bundle.getSerializable("key_imageFavorities");
+        Intent intent = getIntent();
+        if(intent != null) {
+            Bundle bundle = intent.getExtras().getBundle("key_bundleFavorites");
+            Favorite favorite = (Favorite) bundle.getSerializable("key_imageFavorites");
 
-        //Extraemos los datos del objeto Photo y los asignamos valores a cada control
-        itemImage.setImageURI(favoritie.getUrl());
-        urlImage = favoritie.getUrl();
+            //Extraemos los datos del objeto Favorite y los asignamos
+            itemImage.setImageURI(favorite.getUrl());
+            urlImage = favorite.getUrl();
+        }
     }
 
     //region Menú
@@ -52,7 +62,7 @@ public class FavoritieDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.menu_shareTodayApod:
+            case R.id.menu_shareDetail:
                 //Compartimos la url de la imagen seleccionada
                 shareText(urlImage);
                 return true;

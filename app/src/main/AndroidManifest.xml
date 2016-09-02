@@ -26,9 +26,6 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ListingActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -40,7 +37,9 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".FavoritieDetailActivity"></activity>
+        <activity
+            android:name=".FavoriteDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

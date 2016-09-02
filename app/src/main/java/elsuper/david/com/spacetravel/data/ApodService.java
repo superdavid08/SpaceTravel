@@ -11,9 +11,9 @@ import retrofit2.http.Query;
  * Created by Andrés David García Gómez.
  */
 public interface ApodService {
-
-    //Estableciendo los Endpoints
-
+    /********************************/
+    /*Estableciendo los endpoints   */
+    /********************************/
     @GET("planetary/apod?api_key=" + BuildConfig.NASA_API_KEY)
     Call<Apod> getTodayApod();
 
@@ -29,5 +29,4 @@ public interface ApodService {
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
     Call<MarsRoverResponse> getTodayMarsRovertWithAllQuery(@Query("sol") int sol,
                                                            @Query("page") int page, @Query("api_key") String apiKey);
-
 }

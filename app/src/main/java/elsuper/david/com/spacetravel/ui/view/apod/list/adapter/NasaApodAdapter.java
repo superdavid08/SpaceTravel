@@ -14,8 +14,9 @@ import elsuper.david.com.spacetravel.model.Photo;
  */
 public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
 
+    //Lista de fotos
     private List<Photo> marsPhotos;
-    //interface
+    //interfaces
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
 
@@ -35,13 +36,9 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
         //Obtenemos el elemento por su posición y asignamos sus valores en el holder
         Photo photo = marsPhotos.get(position);
         holder.itemTitle.setText(photo.getCamera().getFullName());
-        /*Picasso.with(holder.itemImage.getContext())
-                .load(photo.getImgSrc())
-                .into(holder.itemImage);*/
-        holder.itemImage.setImageURI(photo.getImgSrc());//2016-08-06
+        holder.itemImage.setImageURI(photo.getImgSrc());
         holder.setItemClick(photo,onItemClickListener);
         holder.setItemLongClick(photo,onItemLongClickListener);
-
     }
 
     @Override
@@ -61,12 +58,13 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
         this.marsPhotos = marsPhotos;
     }
 
-    //Interface para manejar el click en la foto
+    //Interface para manejo del click en la foto
     public interface OnItemClickListener{
         void onItemClick(Photo photo);
     }
 
+    //Interface para manejo del click sostenido en la foto
     public interface OnItemLongClickListener{
-        void onItemLongClick(Photo photo); //Se agrega el click largo
+        void onItemLongClick(Photo photo);
     }
 }

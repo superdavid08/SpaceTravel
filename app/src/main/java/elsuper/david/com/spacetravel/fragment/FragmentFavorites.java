@@ -19,13 +19,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import elsuper.david.com.spacetravel.DetailActivity;
-import elsuper.david.com.spacetravel.FavoritieDetailActivity;
+import elsuper.david.com.spacetravel.FavoriteDetailActivity;
 import elsuper.david.com.spacetravel.R;
 import elsuper.david.com.spacetravel.model.Apod;
 import elsuper.david.com.spacetravel.model.Camera;
 import elsuper.david.com.spacetravel.model.CameraSecondary;
-import elsuper.david.com.spacetravel.model.Favoritie;
+import elsuper.david.com.spacetravel.model.Favorite;
 import elsuper.david.com.spacetravel.model.Photo;
 import elsuper.david.com.spacetravel.model.Rover;
 import elsuper.david.com.spacetravel.sql.ApodDataSource;
@@ -33,20 +32,19 @@ import elsuper.david.com.spacetravel.sql.CameraDataSource;
 import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
 import elsuper.david.com.spacetravel.sql.PhotoDataSource;
 import elsuper.david.com.spacetravel.sql.RoverDataSource;
-import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaApodAdapter;
-import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaFavoritieAdapter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaFavoriteAdapter;
 
 /**
  * Created by Andrés David García Gómez.
  */
-public class FragmentFavorities extends Fragment {
+public class FragmentFavorites extends Fragment {
 
-    @BindView(R.id.fragFavorities_marsRover) RecyclerView marsRoverFavoritiesRecycler;
-    @BindView(R.id.fragFavorities_tvUserName) TextView tvUserName;
+    //Controles del fragment
+    @BindView(R.id.fragFavorites_marsRover) RecyclerView marsRoverFavoritesRecycler;
+    @BindView(R.id.fragFavorites_tvUserName) TextView tvUserName;
 
+    //Adaptador
+    private final NasaFavoriteAdapter nasaFavoriteAdapter = new NasaFavoriteAdapter();
     //Para usar la base de datos
     private PhotoDataSource photoDataSource;
     private CameraDataSource cameraDataSource;
@@ -54,9 +52,9 @@ public class FragmentFavorities extends Fragment {
     private CameraSecondaryDataSource cameraSecondaryDataSource;
     private ApodDataSource apodDataSource;
 
-    public static FragmentFavorities newInstance(String userName)
+    public static FragmentFavorites newInstance(String userName)
     {
-        FragmentFavorities f = new FragmentFavorities();
+        FragmentFavorites f = new FragmentFavorites();
         Bundle b = new Bundle();
         b.putString("key_userName",userName);
         f.setArguments(b);
@@ -69,7 +67,8 @@ public class FragmentFavorities extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflamos la vista
-        View view = inflater.inflate(R.layout.fragment_favorities,container,false);
+        View view = inflater.inflate(R.layout.fragment_favorites,container,false);
+        //Acceso a controles del fragment
         ButterKnife.bind(this,view);
 
         //Creamos las instancias para acceder a las tablas
@@ -86,43 +85,42 @@ public class FragmentFavorities extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String userName = getArguments().getString("key_userName");
-        tvUserName.setText(userName);
+        //Extraemos los argumentos
+        Bundle arguments = getArguments();
+        if(arguments != null){
+            tvUserName.setText(arguments.getString("key_userName"));
+        }
 
+        //Establecemos el layout en que se mostrará nuestro listado
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
-        marsRoverFavoritiesRecycler.setLayoutManager(linearLayoutManager);
-        //linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);//
-
-
-        //final NasaApodAdapter nasaApodAdapter = new NasaApodAdapter();
-        final NasaFavoritieAdapter nasaFavoritieAdapter = new NasaFavoritieAdapter();
+        marsRoverFavoritesRecycler.setLayoutManager(linearLayoutManager);
 
         //Llenamos el adapter
-        //nasaApodAdapter.setMarsPhotos(getPhotos());
-        List<Favoritie> favoritiesList = getFavorities();
+        List<Favorite> favoritesList = getFavorites();
+        if(favoritesList.size() == 0)
+            tvUserName.setText(getString(R.string.fragFavorites_msgEmpty));
 
-        if(favoritiesList.size() == 0)
-            tvUserName.setText(getString(R.string.fragFavorities_msgEmpty));
+        nasaFavoriteAdapter.setFavorites(favoritesList);
+        marsRoverFavoritesRecycler.setAdapter(nasaFavoriteAdapter);
 
-        nasaFavoritieAdapter.setFavorities(favoritiesList);
-        marsRoverFavoritiesRecycler.setAdapter(nasaFavoritieAdapter);
 
-        //Para manejar el click en la foto
-        nasaFavoritieAdapter.setOnItemClickListener(new NasaFavoritieAdapter.OnItemClickListener(){
+
+        //Para manejar el click en la foto, envía a su detalle (Imagen ampliada)
+        nasaFavoriteAdapter.setOnItemClickListener(new NasaFavoriteAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(Favoritie favoritie) {
-                Intent intent = new Intent(getActivity(), FavoritieDetailActivity.class);
+            public void onItemClick(Favorite favorite) {
+                Intent intent = new Intent(getActivity(), FavoriteDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("key_imageFavorities",favoritie);
-                intent.putExtra("key_bundleFavorities",bundle);
+                bundle.putSerializable("key_imageFavorites",favorite);
+                intent.putExtra("key_bundleFavorites",bundle);
                 startActivity(intent);
             }
         });
 
-        //Se agrega el click largo
-        nasaFavoritieAdapter.setOnItemLongClickListener(new NasaFavoritieAdapter.OnItemLongClickListener() {
+        //Se agrega el click sostenido. Borra el elemento seleccionado
+        nasaFavoriteAdapter.setOnItemLongClickListener(new NasaFavoriteAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(final Favoritie favoritie) {
+            public void onItemLongClick(final Favorite favoritie) {
 
                 //Para el mensaje de borrado
                 String title;
@@ -130,7 +128,7 @@ public class FragmentFavorities extends Fragment {
                 else title = String.valueOf(favoritie.getId());
 
                 new AlertDialog.Builder(getActivity())
-                        .setTitle(getString(R.string.fragments_msgDeleteFavorities))
+                        .setTitle(getString(R.string.fragments_msgDeleteFavorites))
                         .setMessage(String.format(getString(R.string.fragments_msgQuestionDelete), title))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -154,8 +152,8 @@ public class FragmentFavorities extends Fragment {
                                         Toast.LENGTH_SHORT).show();
 
                                 //Recargamos la lista
-                                nasaFavoritieAdapter.setFavorities(getFavorities());
-                                marsRoverFavoritiesRecycler.setAdapter(nasaFavoritieAdapter);
+                                nasaFavoriteAdapter.setFavorites(getFavorites());
+                                marsRoverFavoritesRecycler.setAdapter(nasaFavoriteAdapter);
 
                             }
                         }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -168,9 +166,9 @@ public class FragmentFavorities extends Fragment {
         });
     }
 
-    private List<Favoritie> getFavorities() {
+    private List<Favorite> getFavorites() {
         //Aqui se guardarán todos los favoritos
-        List<Favoritie> favoritiesList = new ArrayList<>();
+        List<Favorite> favoritesList = new ArrayList<>();
 
         /**************************************************************/
         /* Consultamos los datos en la base                           */
@@ -190,13 +188,13 @@ public class FragmentFavorities extends Fragment {
 
         //Los agregamos a Favoritos
         for (Photo photo: photoList) {
-            Favoritie favoritie = new Favoritie();
-            favoritie.setIsApod(false);
-            favoritie.setId(photo.getId());
-            favoritie.setTitle(photo.getCamera().getFullName());
-            favoritie.setDate(photo.getEarthDate());
-            favoritie.setUrl(photo.getImgSrc());
-            favoritiesList.add(favoritie);
+            Favorite favorite = new Favorite();
+            favorite.setIsApod(false);
+            favorite.setId(photo.getId());
+            favorite.setTitle(photo.getCamera().getFullName());
+            favorite.setDate(photo.getEarthDate());
+            favorite.setUrl(photo.getImgSrc());
+            favoritesList.add(favorite);
         }
 
         //También los Apod
@@ -204,15 +202,15 @@ public class FragmentFavorities extends Fragment {
 
         //Los agregamos a Favoritos
         for (Apod apod: apodList) {
-            Favoritie favoritie = new Favoritie();
-            favoritie.setIsApod(true);
-            favoritie.setId(apod.getId());
-            favoritie.setTitle(apod.getTitle());
-            favoritie.setDate(apod.getDate());
-            favoritie.setUrl(apod.getHdurl());
-            favoritiesList.add(favoritie);
+            Favorite favorite = new Favorite();
+            favorite.setIsApod(true);
+            favorite.setId(apod.getId());
+            favorite.setTitle(apod.getTitle());
+            favorite.setDate(apod.getDate());
+            favorite.setUrl(apod.getUrl());
+            favoritesList.add(favorite);
         }
 
-        return favoritiesList;
+        return favoritesList;
     }
 }

@@ -22,7 +22,7 @@
                 android:layout_margin="5dp"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:id="@+id/itemFavoritie_sdvImage"
+                android:id="@+id/itemFavorite_sdvImage"
                 android:layout_gravity="center_horizontal"
                 fresco:actualImageScaleType="fitXY" />
 
@@ -38,19 +38,19 @@
         <TextView
             android:layout_weight="1"
             android:paddingTop="10dp"
-            android:id="@+id/itemFavoritie_tvId"
+            android:id="@+id/itemFavorite_tvId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
             android:layout_weight="1"
-            android:id="@+id/itemFavoritie_tvTitle"
+            android:id="@+id/itemFavorite_tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
             android:layout_weight="1"
-            android:id="@+id/itemFavoritie_tvDate"
+            android:id="@+id/itemFavorite_tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

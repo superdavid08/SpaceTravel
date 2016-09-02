@@ -23,60 +23,77 @@ public class CameraSecondaryDataSource {
     }
 
     public long saveCameraSecondary(CameraSecondary modelCameraSecondary, int photoId){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Preparamos el modelo a guardar
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MySqliteHelper.COLUMN_CAMERASECONDARY_PHOTO_ID, photoId);
-        contentValues.put(MySqliteHelper.COLUMN_CAMERASECONDARY_NAME, modelCameraSecondary.getName());
-        contentValues.put(MySqliteHelper.COLUMN_CAMERASECONDARY_FULL_NAME, modelCameraSecondary.getFullName());
+            //Preparamos el modelo a guardar
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MySqliteHelper.COLUMN_CAMERASECONDARY_PHOTO_ID, photoId);
+            contentValues.put(MySqliteHelper.COLUMN_CAMERASECONDARY_NAME, modelCameraSecondary.getName());
+            contentValues.put(MySqliteHelper.COLUMN_CAMERASECONDARY_FULL_NAME, modelCameraSecondary.getFullName());
 
-        //Insertamos el registro
-        long result = db.insert(MySqliteHelper.TABLENAME_CAMERASECONDARY, null, contentValues);
+            //Insertamos el registro
+            long result = db.insert(MySqliteHelper.TABLENAME_CAMERASECONDARY, null, contentValues);
 
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
 
-        return result;
+            return result;
+        }
+        catch (Exception ex){
+            return -1;
+        }
     }
 
     public List<CameraSecondary> getAllCamerasSecondariesByIdPhoto(int photoId){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Consultamos toda la tabla photo_table
-        List<CameraSecondary> modelCameraSecondaryList = new ArrayList<>();
-        Cursor cursor = db.query(MySqliteHelper.TABLENAME_CAMERASECONDARY,null,
-                MySqliteHelper.COLUMN_CAMERASECONDARY_PHOTO_ID + "=?",
-                new String[]{String.valueOf(photoId)},null,null,null);
+            //Consultamos toda la tabla photo_table
+            List<CameraSecondary> modelCameraSecondaryList = new ArrayList<>();
+            Cursor cursor = db.query(MySqliteHelper.TABLENAME_CAMERASECONDARY, null,
+                    MySqliteHelper.COLUMN_CAMERASECONDARY_PHOTO_ID + "=?",
+                    new String[]{String.valueOf(photoId)}, null, null, null);
 
-        //Agregamos cada elemento del cursor a la lista
-        while(cursor.moveToNext()){
-            CameraSecondary modelCameraSecondary = new CameraSecondary();
-            modelCameraSecondary.setName(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_CAMERASECONDARY_NAME)));
-            modelCameraSecondary.setFullName(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_CAMERASECONDARY_FULL_NAME)));
-            modelCameraSecondaryList.add(modelCameraSecondary);
+            //Agregamos cada elemento del cursor a la lista
+            while (cursor.moveToNext()) {
+                CameraSecondary modelCameraSecondary = new CameraSecondary();
+                modelCameraSecondary.setName(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_CAMERASECONDARY_NAME)));
+                modelCameraSecondary.setFullName(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_CAMERASECONDARY_FULL_NAME)));
+                modelCameraSecondaryList.add(modelCameraSecondary);
+            }
+
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return modelCameraSecondaryList;
         }
-
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
-
-        return  modelCameraSecondaryList;
+        catch (Exception ex){
+            return null;
+        }
     }
 
-    public void deleteCamerasSecondariesByIdPhoto(int photoId){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+    public int deleteCamerasSecondariesByIdPhoto(int photoId){
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Eliminamos el registro
-        db.delete(MySqliteHelper.TABLENAME_CAMERASECONDARY, MySqliteHelper.COLUMN_CAMERASECONDARY_PHOTO_ID + "=?",
-                new String[]{String.valueOf(photoId)});
+            //Eliminamos el registro
+            int result = db.delete(MySqliteHelper.TABLENAME_CAMERASECONDARY, MySqliteHelper.COLUMN_CAMERASECONDARY_PHOTO_ID + "=?",
+                    new String[]{String.valueOf(photoId)});
 
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return result;
+        }
+        catch (Exception ex){
+            return -1;
+        }
     }
 }

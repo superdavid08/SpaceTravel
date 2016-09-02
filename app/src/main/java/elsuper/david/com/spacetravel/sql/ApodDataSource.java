@@ -23,137 +23,162 @@ public class ApodDataSource {
     }
 
     public long saveApod(Apod modelApod){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Preparamos el modelo a guardar
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MySqliteHelper.COLUMN_APOD_COPYRIGHT, modelApod.getCopyright());
-        contentValues.put(MySqliteHelper.COLUMN_APOD_DATE, modelApod.getDate());
-        contentValues.put(MySqliteHelper.COLUMN_APOD_EXPLANATION, modelApod.getExplanation());
-        contentValues.put(MySqliteHelper.COLUMN_APOD_HDURL, modelApod.getHdurl());
-        contentValues.put(MySqliteHelper.COLUMN_APOD_MEDIA_TYPE, modelApod.getMediaType());
-        contentValues.put(MySqliteHelper.COLUMN_APOD_SERVICE_VERSION, modelApod.getServiceVersion());
-        contentValues.put(MySqliteHelper.COLUMN_APOD_TITLE, modelApod.getTitle());
-        contentValues.put(MySqliteHelper.COLUMN_APOD_URL, modelApod.getUrl());
+            //Preparamos el modelo a guardar
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MySqliteHelper.COLUMN_APOD_COPYRIGHT, modelApod.getCopyright());
+            contentValues.put(MySqliteHelper.COLUMN_APOD_DATE, modelApod.getDate());
+            contentValues.put(MySqliteHelper.COLUMN_APOD_EXPLANATION, modelApod.getExplanation());
+            contentValues.put(MySqliteHelper.COLUMN_APOD_HDURL, modelApod.getHdurl());
+            contentValues.put(MySqliteHelper.COLUMN_APOD_MEDIA_TYPE, modelApod.getMediaType());
+            contentValues.put(MySqliteHelper.COLUMN_APOD_SERVICE_VERSION, modelApod.getServiceVersion());
+            contentValues.put(MySqliteHelper.COLUMN_APOD_TITLE, modelApod.getTitle());
+            contentValues.put(MySqliteHelper.COLUMN_APOD_URL, modelApod.getUrl());
 
-        //Insertamos el registro
-        long result = db.insert(MySqliteHelper.TABLENAME_APOD, null, contentValues);
+            //Insertamos el registro
+            long result = db.insert(MySqliteHelper.TABLENAME_APOD, null, contentValues);
 
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
 
-        return result;
+            return result;
+        }
+        catch (Exception ex){
+            return -1;
+        }
     }
 
     public List<Apod> getAllApods(){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Consultamos toda la tabla photo_table
-        List<Apod> modelApodList = new ArrayList<>();
-        Cursor cursor = db.query(MySqliteHelper.TABLENAME_APOD,null,null,null,null,null,null);
+            //Consultamos toda la tabla photo_table
+            List<Apod> modelApodList = new ArrayList<>();
+            Cursor cursor = db.query(MySqliteHelper.TABLENAME_APOD, null, null, null, null, null, null);
 
-        //Agregamos cada elemento del cursor a la lista
-        while(cursor.moveToNext()){
-            Apod modelApod = new Apod();
-            modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
-            modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
-            modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
-            modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));
-            modelApod.setHdurl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_HDURL)));
-            modelApod.setMediaType(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_MEDIA_TYPE)));
-            modelApod.setServiceVersion(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_SERVICE_VERSION)));
-            modelApod.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_TITLE)));
-            modelApod.setUrl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_URL)));
-            modelApodList.add(modelApod);
+            //Agregamos cada elemento del cursor a la lista
+            while (cursor.moveToNext()) {
+                Apod modelApod = new Apod();
+                modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
+                modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
+                modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
+                modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));
+                modelApod.setHdurl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_HDURL)));
+                modelApod.setMediaType(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_MEDIA_TYPE)));
+                modelApod.setServiceVersion(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_SERVICE_VERSION)));
+                modelApod.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_TITLE)));
+                modelApod.setUrl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_URL)));
+                modelApodList.add(modelApod);
+            }
+
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return modelApodList;
         }
-
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
-
-        return  modelApodList;
+        catch (Exception ex){
+            return null;
+        }
     }
 
-    public void deleteApod(int apodId){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+    public int deleteApod(int apodId){
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Eliminamos el registro
-        db.delete(MySqliteHelper.TABLENAME_APOD, MySqliteHelper.COLUMN_ID + "=?",
-                new String[]{String.valueOf(apodId)});
+            //Eliminamos el registro
+            int result = db.delete(MySqliteHelper.TABLENAME_APOD, MySqliteHelper.COLUMN_ID + "=?",
+                    new String[]{String.valueOf(apodId)});
 
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return result;
+        }
+        catch (Exception ex){
+            return -1;
+        }
     }
 
     public Apod getApod(int apodId){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Objeto a devolver
-        Apod modelApod = new Apod();
+            //Objeto a devolver
+            Apod modelApod = new Apod();
 
-        //Consultamos
-        Cursor cursor = db.query(MySqliteHelper.TABLENAME_APOD, null, MySqliteHelper.COLUMN_ID + "=?",
-                new String[]{String.valueOf(apodId)},null,null,null);
+            //Consultamos
+            Cursor cursor = db.query(MySqliteHelper.TABLENAME_APOD, null, MySqliteHelper.COLUMN_ID + "=?",
+                    new String[]{String.valueOf(apodId)}, null, null, null);
 
-        //Obtenemos el primer registro del cursor
-        if(cursor.moveToFirst()){
-            modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
-            modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
-            modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
-            modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));
-            modelApod.setHdurl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_HDURL)));
-            modelApod.setMediaType(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_MEDIA_TYPE)));
-            modelApod.setServiceVersion(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_SERVICE_VERSION)));
-            modelApod.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_TITLE)));
-            modelApod.setUrl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_URL)));
+            //Obtenemos el primer registro del cursor
+            if (cursor.moveToFirst()) {
+                modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
+                modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
+                modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
+                modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));
+                modelApod.setHdurl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_HDURL)));
+                modelApod.setMediaType(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_MEDIA_TYPE)));
+                modelApod.setServiceVersion(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_SERVICE_VERSION)));
+                modelApod.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_TITLE)));
+                modelApod.setUrl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_URL)));
+            } else
+                modelApod = null;
+
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return modelApod;
         }
-        else
-            modelApod = null;
-
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
-
-        return modelApod;
+        catch (Exception ex){
+            return null;
+        }
     }
 
     public Apod getApod(String title, String date){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Objeto a devolver
-        Apod modelApod = new Apod();
+            //Objeto a devolver
+            Apod modelApod = new Apod();
 
-        //Consultamos
-        Cursor cursor = db.query(MySqliteHelper.TABLENAME_APOD, null,
-                MySqliteHelper.COLUMN_APOD_TITLE + "=? and " + MySqliteHelper.COLUMN_APOD_DATE + "=?",
-                new String[]{title,date},null,null,null);
+            //Consultamos
+            Cursor cursor = db.query(MySqliteHelper.TABLENAME_APOD, null,
+                    MySqliteHelper.COLUMN_APOD_TITLE + "=? and " + MySqliteHelper.COLUMN_APOD_DATE + "=?",
+                    new String[]{title, date}, null, null, null);
 
-        //Obtenemos el primer registro del cursor
-        if(cursor.moveToFirst()){
-            modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
-            modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
-            modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
-            modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));
-            modelApod.setHdurl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_HDURL)));
-            modelApod.setMediaType(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_MEDIA_TYPE)));
-            modelApod.setServiceVersion(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_SERVICE_VERSION)));
-            modelApod.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_TITLE)));
-            modelApod.setUrl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_URL)));
+            //Obtenemos el primer registro del cursor
+            if (cursor.moveToFirst()) {
+                modelApod.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_ID)));
+                modelApod.setCopyright(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_COPYRIGHT)));
+                modelApod.setDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_DATE)));
+                modelApod.setExplanation(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_EXPLANATION)));
+                modelApod.setHdurl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_HDURL)));
+                modelApod.setMediaType(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_MEDIA_TYPE)));
+                modelApod.setServiceVersion(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_SERVICE_VERSION)));
+                modelApod.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_TITLE)));
+                modelApod.setUrl(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_APOD_URL)));
+            } else
+                modelApod = null;
+
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return modelApod;
         }
-        else
-            modelApod = null;
-
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
-
-        return modelApod;
+        catch (Exception ex){
+            return null;
+        }
     }
 }

@@ -16,7 +16,6 @@
         fresco:actualImageScaleType="fitXY" />
 
     <TextView
-        android:text="hgjhgj"
         android:layout_gravity="bottom|center"
         android:layout_margin="10dp"
         android:textStyle="bold"

@@ -24,89 +24,110 @@ public class PhotoDataSource {
     }
 
     public long savePhoto(Photo modelPhoto){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Preparamos el modelo a guardar
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MySqliteHelper.COLUMN_PHOTO_ID, modelPhoto.getId());
-        contentValues.put(MySqliteHelper.COLUMN_PHOTO_SOL, modelPhoto.getSol());
-        contentValues.put(MySqliteHelper.COLUMN_PHOTO_IMG_SRC, modelPhoto.getImgSrc());
-        contentValues.put(MySqliteHelper.COLUMN_PHOTO_EARTH_DATE, modelPhoto.getEarthDate());
+            //Preparamos el modelo a guardar
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MySqliteHelper.COLUMN_PHOTO_ID, modelPhoto.getId());
+            contentValues.put(MySqliteHelper.COLUMN_PHOTO_SOL, modelPhoto.getSol());
+            contentValues.put(MySqliteHelper.COLUMN_PHOTO_IMG_SRC, modelPhoto.getImgSrc());
+            contentValues.put(MySqliteHelper.COLUMN_PHOTO_EARTH_DATE, modelPhoto.getEarthDate());
 
-        //Insertamos el registro
-        long result = db.insert(MySqliteHelper.TABLENAME_PHOTO, null, contentValues);
+            //Insertamos el registro
+            long result = db.insert(MySqliteHelper.TABLENAME_PHOTO, null, contentValues);
 
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
 
-        return result;
+            return result;
+        }
+        catch(Exception ex){
+            return -1;
+        }
     }
 
     public List<Photo> getAllPhotos(){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Consultamos toda la tabla photo_table
-        List<Photo> modelPhotoList = new ArrayList<>();
-        Cursor cursor = db.query(MySqliteHelper.TABLENAME_PHOTO,null,null,null,null,null,null);
+            //Consultamos toda la tabla photo_table
+            List<Photo> modelPhotoList = new ArrayList<>();
+            Cursor cursor = db.query(MySqliteHelper.TABLENAME_PHOTO, null, null, null, null, null, null);
 
-        //Agregamos cada elemento del cursor a la lista
-        while(cursor.moveToNext()){
-            Photo modelPhoto = new Photo();
-            modelPhoto.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_ID)));
-            modelPhoto.setSol(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_SOL)));
-            modelPhoto.setImgSrc(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_IMG_SRC)));
-            modelPhoto.setEarthDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_EARTH_DATE)));
-            modelPhotoList.add(modelPhoto);
+            //Agregamos cada elemento del cursor a la lista
+            while (cursor.moveToNext()) {
+                Photo modelPhoto = new Photo();
+                modelPhoto.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_ID)));
+                modelPhoto.setSol(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_SOL)));
+                modelPhoto.setImgSrc(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_IMG_SRC)));
+                modelPhoto.setEarthDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_EARTH_DATE)));
+                modelPhotoList.add(modelPhoto);
+            }
+
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return modelPhotoList;
         }
-
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
-
-        return  modelPhotoList;
+        catch(Exception ex){
+            return null;
+        }
     }
 
-    public void deletePhoto(int photoId){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+    public int deletePhoto(int photoId){
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Eliminamos el registro
-        db.delete(MySqliteHelper.TABLENAME_PHOTO, MySqliteHelper.COLUMN_PHOTO_ID + "=?",
-                new String[]{String.valueOf(photoId)});
+            //Eliminamos el registro
+            int result = db.delete(MySqliteHelper.TABLENAME_PHOTO, MySqliteHelper.COLUMN_PHOTO_ID + "=?",
+                    new String[]{String.valueOf(photoId)});
 
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return result;
+        }
+        catch (Exception ex){
+            return -1;
+        }
     }
 
     public Photo getPhoto(int id){
-        //Abrimos la conexión
-        db = helper.getWritableDatabase();
+        try {
+            //Abrimos la conexión
+            db = helper.getWritableDatabase();
 
-        //Objeto a devolver
-        Photo modelPhoto = new Photo();
+            //Objeto a devolver
+            Photo modelPhoto = new Photo();
 
-        //Consultamos
-        Cursor cursor = db.query(MySqliteHelper.TABLENAME_PHOTO, null, MySqliteHelper.COLUMN_PHOTO_ID + "=?",
-                new String[]{String.valueOf(id)},null,null,null);
+            //Consultamos
+            Cursor cursor = db.query(MySqliteHelper.TABLENAME_PHOTO, null, MySqliteHelper.COLUMN_PHOTO_ID + "=?",
+                    new String[]{String.valueOf(id)}, null, null, null);
 
-        //Obtenemos el primer registro del cursor
-        if(cursor.moveToFirst()){
-            modelPhoto.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_ID)));
-            modelPhoto.setSol(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_SOL)));
-            modelPhoto.setImgSrc(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_IMG_SRC)));
-            modelPhoto.setEarthDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_EARTH_DATE)));
+            //Obtenemos el primer registro del cursor
+            if (cursor.moveToFirst()) {
+                modelPhoto.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_ID)));
+                modelPhoto.setSol(cursor.getInt(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_SOL)));
+                modelPhoto.setImgSrc(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_IMG_SRC)));
+                modelPhoto.setEarthDate(cursor.getString(cursor.getColumnIndexOrThrow(MySqliteHelper.COLUMN_PHOTO_EARTH_DATE)));
+            } else
+                modelPhoto = null;
+
+            //Cerramos la conexión
+            if (db.isOpen())
+                db.close();
+
+            return modelPhoto;
         }
-        else
-            modelPhoto = null;
-
-        //Cerramos la conexión
-        if(db.isOpen())
-            db.close();
-
-        return modelPhoto;
+        catch (Exception ex){
+            return null;
+        }
     }
 }

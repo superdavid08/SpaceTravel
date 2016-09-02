@@ -4,7 +4,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,22 +29,31 @@ import java.security.NoSuchAlgorithmException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import elsuper.david.com.spacetravel.fragment.FragmentApod;
-import elsuper.david.com.spacetravel.fragment.FragmentFavorities;
+import elsuper.david.com.spacetravel.fragment.FragmentFavorites;
 import elsuper.david.com.spacetravel.fragment.FragmentListing;
 
+/**
+ * Created by Andrés David García Gómez.
+ */
 public class ListingActivity extends AppCompatActivity {
 
+    //Controles de la Activity
     @BindView(R.id.listNav_toolbar) Toolbar toolbar;
     @BindView(R.id.listNav_view) NavigationView navigationView;
     @BindView(R.id.listNav_drawer) DrawerLayout drawerLayout;
 
+    //Para almacenar el nombre del usuario logueado
     private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listing_navigation_activity);
+
+        //Acceso a controles del fragment
         ButterKnife.bind(this);
+        //Agregando el toolbar
+        setSupportActionBar(toolbar);
 
         /*********************************************/
         /************ Para generar el hash ***********/
@@ -63,29 +71,23 @@ public class ListingActivity extends AppCompatActivity {
         /*********************************************/
         /*********************************************/
 
-        setSupportActionBar(toolbar);
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-
                 drawerLayout.closeDrawers();
 
+                //Reemplazamos FrameLayout con el fragment seleccionado por el usuario
                 switch (item.getItemId()){
                     case R.id.navigation_todayApodItem:
                         getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentApod()).commit();
-                        //Snackbar.make(findViewById(android.R.id.content), "Today Apod Item", Snackbar.LENGTH_SHORT).show();
                         return true;
                     case R.id.navigation_marsRoverItem:
                         getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentListing()).commit();
-                        //Snackbar.make(findViewById(android.R.id.content), "Mars Rover", Snackbar.LENGTH_SHORT).show();
                         return true;
                     case R.id.navigation_favoriteItem:
-                        //Mostramos el Fragmen de Perfil y le pasamos el username
-                        FragmentFavorities f = FragmentFavorities.newInstance(user);
+                        //Si seleccionó el Fragment de "Favoritos, le pasamos el username
+                        FragmentFavorites f = FragmentFavorites.newInstance(user);
                         getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, f).commit();
-                        //getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentFavorities()).commit();
-                        //Snackbar.make(findViewById(android.R.id.content), getString(R.string.listingNavigationMenu_favorities) , Snackbar.LENGTH_SHORT).show();
                         return true;
                     default:
                         return false;
@@ -93,7 +95,7 @@ public class ListingActivity extends AppCompatActivity {
             }
         });
 
-
+        //Para abrir y cerrar el drawer
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.app_name,R.string.app_name) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -117,14 +119,12 @@ public class ListingActivity extends AppCompatActivity {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
                 try{
+                    //Usando la información de logueo por Facebook
                     SimpleDraweeView userImage = (SimpleDraweeView) findViewById(R.id.header_sdvUserImage);
                     userImage.setImageURI("http://graph.facebook.com/" + object.getString("id") + "/picture?type=large");
                     TextView userName = (TextView) findViewById(R.id.header_tvUserName);
-                    userName.setText(object.getString("name"));
                     user = object.getString("name");
-
-                    //Log.d("nameFB",object.getString("name"));
-                    //Log.d("idFB",object.getString("id"));
+                    userName.setText(user);
                 }
                 catch (JSONException e){
                     e.printStackTrace();

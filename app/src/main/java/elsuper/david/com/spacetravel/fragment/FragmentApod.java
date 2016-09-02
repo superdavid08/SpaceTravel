@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,7 +71,7 @@ public class FragmentApod extends Fragment {
     private StringBuilder date;
     //Para usar la base de datos
     private ApodDataSource apodDataSource;
-    //Para guardar el objeto en la tabla apod de la base de datos "favoritos"
+    //Para guardar el modelo en la tabla apod de la base de datos "favoritos"
     private Apod modelApod;
 
     @Nullable
@@ -116,8 +115,10 @@ public class FragmentApod extends Fragment {
         //Instanciamos el servicio apod para poder usar Retrofit
         apodService = Data.getRetrofitInstance().create(ApodService.class);
 
-        //LLamamos al método que establece su callback
-        apodServiceEnqueue(apodService);
+        if(apodService != null) {
+            //LLamamos al método que establece su callback
+            apodServiceEnqueue(apodService);
+        }
     }
 
     private void apodServiceEnqueue(ApodService apodService) {
@@ -135,8 +136,8 @@ public class FragmentApod extends Fragment {
                     //Asignamos la información del Apod recibido a los controles y variables de clase
                     if (response.body().getMediaType().equals("image")) { //Si es imagen
                         //Url de la foto
-                        urlImageApod = response.body().getHdurl();
-                        Picasso.with(getActivity()).load(response.body().getHdurl()).into(imageApod);
+                        urlImageApod = response.body().getUrl();
+                        Picasso.with(getActivity()).load(response.body().getUrl()).into(imageApod);
                         isVideo = false;
                     } else { //Si es video
                         urlVideo = response.body().getUrl();
@@ -153,7 +154,7 @@ public class FragmentApod extends Fragment {
                             response.body().getCopyright();
                     tvCopyright.setText(copyright);
 
-                    //Construimos el objeto apod de clase por si el usuario decide agregarlo a favoritos
+                    //Construimos el objeto apod por si el usuario decide agregarlo a favoritos
                     modelApod = new Apod();
                     modelApod.setCopyright(copyright);
                     modelApod.setDate(response.body().getDate());
@@ -216,7 +217,7 @@ public class FragmentApod extends Fragment {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
+                        //Le damos el formato requerido a la fecha seleccionada
                         date = new StringBuilder();
                         date.append(year).append("-");
                         if((monthOfYear+1) < 10) date.append("0");
@@ -229,12 +230,13 @@ public class FragmentApod extends Fragment {
                     }
                 }, iYear, iMonth, iDay);
         datePickerDialog.show();
-        datePickerDialog.setTitle("Selecciona una fecha");
+        datePickerDialog.setTitle(getString(R.string.fragApod_msgSelectDate));
         //Sólo puede seleccionar hasta la fecha actual
         datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+
+        //Le restamos 16 años a la fecha actual para ponerla como fecha mínima de selección
         Calendar calendarTemp = Calendar.getInstance();
-        //Le restamos diez años a la fecha actual para ponerla como fecha mínima de selección
-        calendarTemp.add(calendar.YEAR,-10);
+        calendarTemp.add(calendar.YEAR,-16);
         datePickerDialog.getDatePicker().setMinDate(calendarTemp.getTimeInMillis());
     }
 
@@ -249,27 +251,27 @@ public class FragmentApod extends Fragment {
         }
     }
 
+    /*El click en la imagen sirve para agregar el objeto Apod a favoritos*/
     @OnLongClick(R.id.fragApod_image)
     public boolean onLongClickImage(){
 
         //Si es un video no lo puede poner en favoritos
-        if(isVideo){
-            return true;
-        }
+        if(isVideo){ return true; }
 
-        /*El click largo funciona para agregar el objeto Apod a favoritos*/
-        //Si no existe la foto en la lista de favoritos
+        //Si no existe la foto en la lista de favoritos, se puede agregar
         if(apodDataSource.getApod(modelApod.getTitle(),modelApod.getDate()) == null) {
             new AlertDialog.Builder(getActivity())
-                    .setTitle(getString(R.string.fragments_msgAddToFavorities))
+                    .setTitle(getString(R.string.fragments_msgAddToFavorites))
                     .setMessage(String.format(getString(R.string.fragments_msgQuestionAdd), modelApod.getTitle()))
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Guardamos el objeto Apod en la base de datos
-                            apodDataSource.saveApod(modelApod);
-                            Toast.makeText(getActivity(),getString(R.string.fragments_msgSuccessfullyAdded),
-                                    Toast.LENGTH_SHORT).show();
+                            long result = apodDataSource.saveApod(modelApod);
+                            if(result != -1) {
+                                Toast.makeText(getActivity(), getString(R.string.fragments_msgSuccessfullyAdded),
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                 @Override

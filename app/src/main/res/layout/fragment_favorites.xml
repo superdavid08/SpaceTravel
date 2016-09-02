@@ -8,10 +8,9 @@
     <TextView
         android:gravity="center"
         android:textSize="16sp"
-        android:text="dsfsdfsdfsdf"
         android:padding="10dp"
         android:textColor="@color/colorSecondary25"
-        android:id="@+id/fragFavorities_tvUserName"
+        android:id="@+id/fragFavorites_tvUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -20,7 +19,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:id="@+id/fragFavorities_marsRover">
+        android:id="@+id/fragFavorites_marsRover">
 
     </android.support.v7.widget.RecyclerView>
 

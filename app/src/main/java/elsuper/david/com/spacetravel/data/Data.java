@@ -12,17 +12,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Data {
 
     public static Retrofit getRetrofitInstance(){
+        try {
+            //Para monitorear el log
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            //Para el correcto almacenamiento de cada petición
+            OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
+            okHttpClient.addInterceptor(httpLoggingInterceptor);
 
-        //Para monitorear el log
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        //Para el correcto almacenamiento de cada petición
-        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
-        okHttpClient.addInterceptor(httpLoggingInterceptor);
-
-        return new Retrofit.Builder().baseUrl(BuildConfig.URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient.build())
-                .build();
+            return new Retrofit.Builder().baseUrl(BuildConfig.URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient.build())
+                    .build();
+        }
+        catch (Exception ex){
+            return null;
+        }
     }
 }
