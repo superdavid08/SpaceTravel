@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import elsuper.david.com.spacetravel.ListingActivity;
 import elsuper.david.com.spacetravel.R;
+import elsuper.david.com.spacetravel.SplashScreenActivity;
 
 /**
  * Created by Andrés David García Gómez.

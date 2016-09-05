@@ -43,6 +43,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Created by Andrés David García Gómez.
+ */
 public class FragmentListing extends Fragment{
 
     //Controles del fragment
@@ -238,6 +241,7 @@ public class FragmentListing extends Fragment{
         startActivity(Intent.createChooser(shareIntent,getString(R.string.fragments_msgShare)));
     }
     //endregion
+    */
 
     //region Clicks de los controles
     @OnClick(R.id.fragListing_btnNextPage)
@@ -273,5 +277,4 @@ public class FragmentListing extends Fragment{
         }
     }
     //endregion
-    */
 }

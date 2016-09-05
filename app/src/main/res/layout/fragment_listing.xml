@@ -6,41 +6,43 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:padding="6dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
+            android:layout_weight="1"
+            android:background="@color/colorBlack"
             android:textColor="@color/colorComplement1"
             android:textAllCaps="false"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:background="@color/colorComplement5"
             android:text="@string/fragListing_btnPreviousPage"
             android:id="@+id/fragListing_btnPreviousPage"
-            android:layout_width="120dp"
-            android:layout_height="25dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
 
         <TextView
+            android:layout_weight="1"
             android:textStyle="bold"
             android:gravity="center"
             android:textSize="25sp"
             android:text="1"
             android:id="@+id/fragListing_tvNumPage"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
+            android:layout_weight="1"
             android:textColor="@color/colorComplement1"
             android:textAllCaps="false"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:background="@color/colorComplement5"
+            android:background="@color/colorBlack"
             android:text="@string/fragListing_btnNextPage"
             android:id="@+id/fragListing_btnNextPage"
-            android:layout_width="120dp"
-            android:layout_height="25dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
 
     </LinearLayout>
 

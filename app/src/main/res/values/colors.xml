@@ -29,6 +29,8 @@
     <color name="colorComplement3">#FFC841</color> <!--Principal-->
     <color name="colorComplement4">#F9B713</color>
     <color name="colorComplement5">#C08A05</color>
+
+    <color name="colorBlack">#000000</color>
 </resources>
 
 
