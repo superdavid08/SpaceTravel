@@ -25,6 +25,7 @@ import elsuper.david.com.spacetravel.sql.CameraDataSource;
 import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
 import elsuper.david.com.spacetravel.sql.PhotoDataSource;
 import elsuper.david.com.spacetravel.sql.RoverDataSource;
+import elsuper.david.com.spacetravel.util.ConnectionUtil;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -54,6 +55,8 @@ public class DetailActivity extends AppCompatActivity {
     private CameraSecondaryDataSource cameraSecondaryDataSource;
     //Elemento que se muestra en pantalla
     private Photo photo;
+    //Para validar la conexión a internet
+    private ConnectionUtil connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         //Acceso a controles
         ButterKnife.bind(this);
+        //Creamos la instancia para validar la conexión
+        connection = new ConnectionUtil(DetailActivity.this);
 
         //Creamos las instancias para acceder a las tablas
         photoDataSource = new PhotoDataSource(DetailActivity.this);
@@ -76,6 +81,11 @@ public class DetailActivity extends AppCompatActivity {
         //Obtenemos los Extras
         Intent intent = getIntent();
         if(intent != null) {
+            //Le avisamos al usuario si no hay conexión, pero en este caso no es necesario detener el llenado del adapter
+            if(!connection.isConnected()){
+                Toast.makeText(DetailActivity.this,getString(R.string.connectionRequired), Toast.LENGTH_LONG).show();
+            }
+
             Bundle bundle = intent.getExtras().getBundle("key_bundle");
             photo = (Photo) bundle.getSerializable("key_photo");
 

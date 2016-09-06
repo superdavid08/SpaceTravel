@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -17,6 +18,7 @@ import elsuper.david.com.spacetravel.sql.CameraDataSource;
 import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
 import elsuper.david.com.spacetravel.sql.PhotoDataSource;
 import elsuper.david.com.spacetravel.sql.RoverDataSource;
+import elsuper.david.com.spacetravel.util.ConnectionUtil;
 
 public class FavoriteDetailActivity extends AppCompatActivity {
 
@@ -26,6 +28,8 @@ public class FavoriteDetailActivity extends AppCompatActivity {
 
     //Para almacenar la url de la imagen seleccionada
     private String urlImage;
+    //Para validar la conexión a internet
+    private ConnectionUtil connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,8 @@ public class FavoriteDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite_detail);
         //Acceso a controles
         ButterKnife.bind(this);
+        //Creamos la instancia para validar la conexión
+        connection = new ConnectionUtil(FavoriteDetailActivity.this);
 
         //Agregando el toolbar
         setSupportActionBar(toolbar);
@@ -42,6 +48,11 @@ public class FavoriteDetailActivity extends AppCompatActivity {
         //Obtenemos los Extras
         Intent intent = getIntent();
         if(intent != null) {
+            //Le avisamos al usuario si no hay conexión, pero en este caso no es necesario detener el llenado del adapter
+            if(!connection.isConnected()){
+                Toast.makeText(FavoriteDetailActivity.this,getString(R.string.connectionRequired), Toast.LENGTH_LONG).show();
+            }
+
             Bundle bundle = intent.getExtras().getBundle("key_bundleFavorites");
             Favorite favorite = (Favorite) bundle.getSerializable("key_imageFavorites");
 

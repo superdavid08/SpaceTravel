@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Space Travel</string>
+    <string name="app_name">Space Travel SD8(</string>
     <string name="listingNavigationMenu_images">Mars Rover Photos</string>
     <string name="listingNavigationMenu_apodToday">Photo today APOD</string>
     <string name="listingNavigationMenu_favorites">Favorites</string>
@@ -30,4 +30,6 @@
     <string name="fragFavorites_msgEmpty">No items in the list of favorites</string>
     <string name="FB_msgLogin">Login</string>
     <string name="FB_msgCancelLogin">Cancel login</string>
+    <string name="connectionRequired">Internet connection is required to access the web service data</string>
+    <string name="fragApod_msgNoInformation">No information for the selected date</string>
 </resources>

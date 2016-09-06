@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,6 +35,7 @@ import elsuper.david.com.spacetravel.data.ApodService;
 import elsuper.david.com.spacetravel.data.Data;
 import elsuper.david.com.spacetravel.model.Apod;
 import elsuper.david.com.spacetravel.sql.ApodDataSource;
+import elsuper.david.com.spacetravel.util.ConnectionUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,6 +75,8 @@ public class FragmentApod extends Fragment {
     private ApodDataSource apodDataSource;
     //Para guardar el modelo en la tabla apod de la base de datos "favoritos"
     private Apod modelApod;
+    //Para validar la conexión a internet
+    private ConnectionUtil connection;
 
     @Nullable
     @Override
@@ -82,15 +86,17 @@ public class FragmentApod extends Fragment {
         //Acceso a controles del fragment
         ButterKnife.bind(this,view);
 
+        //Creamos la instancia para acceder a la tabla
+        apodDataSource = new ApodDataSource(getActivity());
+        //Creamos la instancia para validar la conexión
+        connection = new ConnectionUtil(getActivity());
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //Creamos la instancia para acceder a la tabla
-        apodDataSource = new ApodDataSource(getActivity());
 
         /*********************************************************************/
         /* El parámetro date del endpoint debe tener el formato YYYY-MM-DD   */
@@ -123,6 +129,12 @@ public class FragmentApod extends Fragment {
 
     private void apodServiceEnqueue(ApodService apodService) {
 
+        //Validamos la conexión a internet
+        if(!connection.isConnected()){
+            Toast.makeText(getActivity(),getString(R.string.connectionRequired), Toast.LENGTH_LONG).show();
+            return;
+        }
+
         //Consultamos el elemento Apod del día específico
         Call<Apod> callApodService = apodService.getTodayApodWithAllQuery(
                 date.toString(), BuildConfig.NASA_API_KEY);
@@ -131,8 +143,8 @@ public class FragmentApod extends Fragment {
         callApodService.enqueue(new Callback<Apod>() {
             @Override
             public void onResponse(Call<Apod> call, Response<Apod> response) {
-
-                if(response != null) {
+                //Validando posibles respuestas del webservice
+                if(response != null && (response.code() != 500 || response.code() != 500 || response.body() != null)) {
                     //Asignamos la información del Apod recibido a los controles y variables de clase
                     if (response.body().getMediaType().equals("image")) { //Si es imagen
                         //Url de la foto
@@ -165,6 +177,10 @@ public class FragmentApod extends Fragment {
                     modelApod.setTitle(response.body().getTitle());
                     modelApod.setUrl(response.body().getUrl());
                 }
+                else{
+                    Toast.makeText(getActivity(),getString(R.string.fragApod_msgNoInformation), Toast.LENGTH_LONG).show();
+                }
+
             }
 
             @Override
@@ -213,6 +229,7 @@ public class FragmentApod extends Fragment {
     @OnClick(R.id.fragApod_btnSelectDate)
     public void onClickBtnSelectDate(){
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                android.R.style.Theme_DeviceDefault_Light_Panel,
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -230,7 +247,7 @@ public class FragmentApod extends Fragment {
                     }
                 }, iYear, iMonth, iDay);
         datePickerDialog.show();
-        datePickerDialog.setTitle(getString(R.string.fragApod_msgSelectDate));
+        //datePickerDialog.setTitle(getString(R.string.fragApod_msgSelectDate));
         //Sólo puede seleccionar hasta la fecha actual
         datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
 

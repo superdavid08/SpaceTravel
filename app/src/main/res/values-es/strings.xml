@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Viaje Espacial</string>
+    <string name="app_name">Viaje Espacial SD8</string>
     <string name="listingNavigationMenu_images">Fotos del Rover en Marte</string>
     <string name="listingNavigationMenu_apodToday">Imagen APOD del día</string>
     <string name="listingNavigationMenu_favorites">Favoritos</string>
@@ -30,4 +30,6 @@
     <string name="fragFavorites_msgEmpty">No hay elementos en la lista de favoritos</string>
     <string name="FB_msgLogin">Iniciar sesión</string>
     <string name="FB_msgCancelLogin">Inicio cancelado</string>
+    <string name="connectionRequired">Se necesita conexión a internet para acceder los datos del servicio web</string>
+    <string name="fragApod_msgNoInformation">No hay información por la fecha seleccionada</string>
 </resources>

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menu_shareTodayApod"
         android:icon="@android:drawable/ic_menu_share"
-        android:title="share"
+        android:title="@string/fragments_msgShare"
         android:showAsAction="always"
         app:showAsAction="always" />
 </menu>

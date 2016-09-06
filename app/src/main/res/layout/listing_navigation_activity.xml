@@ -37,7 +37,7 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        navigation:itemTextColor="@color/colorPrimary5"
+        navigation:itemTextColor="@color/colorSecondary5"
         navigation:menu="@menu/listing_navigation_menu"
         navigation:headerLayout="@layout/listing_navigation_header"
         android:layout_gravity="start"

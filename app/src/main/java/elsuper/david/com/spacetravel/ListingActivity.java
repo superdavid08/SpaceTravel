@@ -4,6 +4,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -80,14 +81,20 @@ public class ListingActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.navigation_todayApodItem:
                         getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentApod()).commit();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                getString(R.string.listingNavigationMenu_apodToday), Snackbar.LENGTH_SHORT).show();
                         return true;
                     case R.id.navigation_marsRoverItem:
                         getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentListing()).commit();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                getString(R.string.listingNavigationMenu_images), Snackbar.LENGTH_SHORT).show();
                         return true;
                     case R.id.navigation_favoriteItem:
                         //Si seleccionó el Fragment de "Favoritos, le pasamos el username
                         FragmentFavorites f = FragmentFavorites.newInstance(user);
                         getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, f).commit();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                getString(R.string.listingNavigationMenu_favorites), Snackbar.LENGTH_SHORT).show();
                         return true;
                     default:
                         return false;

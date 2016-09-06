@@ -15,23 +15,11 @@ public class ConnectionUtil {
         this.context = context;
     }
 
-    public Boolean connectedToWifi(){
+    //Valida si hay conexión a internet
+    public Boolean isConnected(){
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
-            NetworkInfo info = connectivity.getActiveNetworkInfo(); //getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            if (info != null) {
-                if (info.isConnected()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    protected Boolean conectadoRedMovil(){
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo info = connectivity.getActiveNetworkInfo(); //getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
             if (info != null) {
                 if (info.isConnected()) {
                     return true;

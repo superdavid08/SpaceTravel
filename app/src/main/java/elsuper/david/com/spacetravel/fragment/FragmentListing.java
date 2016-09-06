@@ -39,6 +39,7 @@ import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
 import elsuper.david.com.spacetravel.sql.PhotoDataSource;
 import elsuper.david.com.spacetravel.sql.RoverDataSource;
 import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaApodAdapter;
+import elsuper.david.com.spacetravel.util.ConnectionUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +72,9 @@ public class FragmentListing extends Fragment{
     private int solNumber;
     //Contador de páginas
     private int numPage = 1;
+    //Para validar la conexión a internet
+    private ConnectionUtil connection;
+
 
     @Nullable
     @Override
@@ -85,6 +89,8 @@ public class FragmentListing extends Fragment{
         cameraDataSource = new CameraDataSource(getActivity());
         roverDataSource = new RoverDataSource(getActivity());
         cameraSecondaryDataSource = new CameraSecondaryDataSource(getActivity());
+        //Creamos la instancia para validar la conexión
+        connection = new ConnectionUtil(getActivity());
 
         return view;
     }
@@ -178,6 +184,11 @@ public class FragmentListing extends Fragment{
 
     private void apodServiceEnqueue(ApodService apodService) {
 
+        //Validamos la conexión a internet
+        if(!isConnected()){
+            return;
+        }
+
         //Consumimos el servicio web y definimos su callback
         apodService.getTodayMarsRovertWithAllQuery(solNumber,numPage, BuildConfig.NASA_API_KEY)
                 .enqueue(new Callback<MarsRoverResponse>() {
@@ -207,45 +218,20 @@ public class FragmentListing extends Fragment{
         });
     }
 
-    /*
-    //region Menú
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.list_rover_menu,menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()){
-            case R.id.menu_shareListRover:
-                shareText(urlImageMarsRover);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void shareText(String text){
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
-        //Compartimos la url de la imagen en la aplicación que el usuario seleccione
-        startActivity(Intent.createChooser(shareIntent,getString(R.string.fragments_msgShare)));
-    }
-    //endregion
-    */
-
     //region Clicks de los controles
     @OnClick(R.id.fragListing_btnNextPage)
     public void onClickBtnNextPage(){
+
+        //Si no está conectado a internet el botón no tiene funcionalidad
+        if(!isConnected()){
+            return;
+        }
+
+        if(!connection.isConnected()){
+            Toast.makeText(getActivity(),getString(R.string.connectionRequired), Toast.LENGTH_LONG).show();
+            return;
+        }
+
         //Se muestra la siguiente página
         if(btnNextPage.isEnabled()) {
             numPage++;
@@ -261,6 +247,12 @@ public class FragmentListing extends Fragment{
 
     @OnClick(R.id.fragListing_btnPreviousPage)
     public void onClickBtnPreviousPage(){
+
+        //Si no está conectado a internet el botón no tiene funcionalidad
+        if(!isConnected()){
+            return;
+        }
+
         //Se muestra la página prevía
         numPage--;
         tvNumPage.setText(String.valueOf(numPage));
@@ -277,4 +269,12 @@ public class FragmentListing extends Fragment{
         }
     }
     //endregion
+
+    public Boolean isConnected(){
+        if(!connection.isConnected()){
+            Toast.makeText(getActivity(),getString(R.string.connectionRequired), Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
 }

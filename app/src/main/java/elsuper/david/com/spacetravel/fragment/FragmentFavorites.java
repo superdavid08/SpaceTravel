@@ -33,6 +33,7 @@ import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
 import elsuper.david.com.spacetravel.sql.PhotoDataSource;
 import elsuper.david.com.spacetravel.sql.RoverDataSource;
 import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaFavoriteAdapter;
+import elsuper.david.com.spacetravel.util.ConnectionUtil;
 
 /**
  * Created by Andrés David García Gómez.
@@ -51,6 +52,8 @@ public class FragmentFavorites extends Fragment {
     private RoverDataSource roverDataSource;
     private CameraSecondaryDataSource cameraSecondaryDataSource;
     private ApodDataSource apodDataSource;
+    //Para validar la conexión a internet
+    private ConnectionUtil connection;
 
     public static FragmentFavorites newInstance(String userName)
     {
@@ -61,7 +64,6 @@ public class FragmentFavorites extends Fragment {
 
         return f;
     }
-
 
     @Nullable
     @Override
@@ -77,6 +79,8 @@ public class FragmentFavorites extends Fragment {
         roverDataSource = new RoverDataSource(getActivity());
         cameraSecondaryDataSource = new CameraSecondaryDataSource(getActivity());
         apodDataSource = new ApodDataSource(getActivity());
+        //Creamos la instancia para validar la conexión
+        connection = new ConnectionUtil(getActivity());
 
         return view;
     }
@@ -99,6 +103,11 @@ public class FragmentFavorites extends Fragment {
         List<Favorite> favoritesList = getFavorites();
         if(favoritesList.size() == 0)
             tvUserName.setText(getString(R.string.fragFavorites_msgEmpty));
+
+        //Le avisamos al usuario que no hay conexión, pero en este caso no es necesario detener el llenado del adapter
+        if(!connection.isConnected()){
+            Toast.makeText(getActivity(),getString(R.string.connectionRequired), Toast.LENGTH_LONG).show();
+        }
 
         nasaFavoriteAdapter.setFavorites(favoritesList);
         marsRoverFavoritesRecycler.setAdapter(nasaFavoriteAdapter);

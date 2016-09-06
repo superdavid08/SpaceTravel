@@ -8,7 +8,7 @@
         android:layout_gravity="center"
         android:id="@+id/header_sdvUserImage"
         android:layout_width="match_parent"
-        android:layout_height="135dp" />
+        android:layout_height="200dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -18,14 +18,14 @@
 
         <LinearLayout
             android:gravity="center"
-            android:background="@color/colorSecondary1"
+            android:background="@color/colorPrimary3"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="55dp">
 
             <TextView
                 android:textStyle="bold"
-                android:textColor="@color/colorSecondary5"
+                android:textColor="@color/colorWhite"
                 android:id="@+id/header_tvUserName"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
