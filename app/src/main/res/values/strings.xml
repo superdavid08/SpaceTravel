@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Space Travel SD8(</string>
-    <string name="listingNavigationMenu_images">Mars Rover Photos</string>
+    <string name="listingNavigationMenu_images">Photos of Mars</string>
     <string name="listingNavigationMenu_apodToday">Photo today APOD</string>
     <string name="listingNavigationMenu_favorites">Favorites</string>
+    <string name="listingNavigationMenu_configurations">Configurations</string>
     <string name="facebook_app_id">183000008784846</string>
     <string name="fragments_msgShare">Share</string>
     <string name="fragments_msgAlreadyExist">The element already exists in the favorites list</string>
@@ -15,13 +16,16 @@
     <string name="fragments_msgQuestionDelete" formatted="false">Do you want to delete the image \"%s\" of your favorites list?</string>
     <string name="fragApod_btnSelectDate">Select another date</string>
     <string name="fragApod_msgSelectDate">Select a date</string>
+    <string name="fragApod_msgNoInformation">No information for the selected date</string>
     <string name="fragListing_btnNextPage">Next</string>
     <string name="fragListing_btnPreviousPage">Previous</string>
-    <string name="fragListing_tvEndOfListing" formatted="false">End of listing Sol %s</string>
+    <string name="fragListing_tvEndOfListing" formatted="false">End of listing sol %s</string>
+    <string name="fragListing_msgNoInformation">No information for this sol</string>
     <string name="detail_tvEarthDate">Earth date:</string>
     <string name="detail_tvCameraName">Name:</string>
     <string name="detail_tvCameraFullName">Full name:</string>
     <string name="detail_tvCameraTitle">Camera</string>
+    <string name="detail_tvRoverTitle">vehicle</string>
     <string name="detail_tvRoverName">Name:</string>
     <string name="detail_tvRoverLandingDate">Landing:</string>
     <string name="detail_tvRoverMaxSol">Max Sol:</string>
@@ -31,5 +35,13 @@
     <string name="FB_msgLogin">Login</string>
     <string name="FB_msgCancelLogin">Cancel login</string>
     <string name="connectionRequired">Internet connection is required to access the web service data</string>
-    <string name="fragApod_msgNoInformation">No information for the selected date</string>
+    <string name="fragConfig_msgChangeSol">Change the parameter: sol</string>
+    <string name="fragConfig_msgCurrentValue">Current value:</string>
+    <string name="fragConfig_chkRandom">Random number</string>
+    <string name="fragConfig_msgNewValue">New value:</string>
+    <string name="fragConfig_btnApply">Apply</string>
+    <string name="fragConfig_msgRandom">Random number between 1 and 1388</string>
+    <string name="fragConfig_msgRequired">New value is required</string>
+    <string name="fragConfig_msgRange">The new value must be a number between 1 and 1388</string>
+    <string name="fragConfig_msgSaved">Applied changes</string>
 </resources>

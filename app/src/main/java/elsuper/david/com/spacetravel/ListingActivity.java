@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import elsuper.david.com.spacetravel.fragment.FragmentApod;
+import elsuper.david.com.spacetravel.fragment.FragmentConfigurations;
 import elsuper.david.com.spacetravel.fragment.FragmentFavorites;
 import elsuper.david.com.spacetravel.fragment.FragmentListing;
 
@@ -95,6 +96,11 @@ public class ListingActivity extends AppCompatActivity {
                         getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, f).commit();
                         Snackbar.make(findViewById(android.R.id.content),
                                 getString(R.string.listingNavigationMenu_favorites), Snackbar.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.navigation_configurations:
+                        getFragmentManager().beginTransaction().replace(R.id.listNav_FragmentFolder, new FragmentConfigurations()).commit();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                getString(R.string.listingNavigationMenu_configurations), Snackbar.LENGTH_SHORT).show();
                         return true;
                     default:
                         return false;

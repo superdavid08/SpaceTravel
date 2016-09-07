@@ -200,7 +200,7 @@ public class FragmentFavorites extends Fragment {
             Favorite favorite = new Favorite();
             favorite.setIsApod(false);
             favorite.setId(photo.getId());
-            favorite.setTitle(photo.getCamera().getFullName());
+            favorite.setTitle("sol " + photo.getSol().toString());
             favorite.setDate(photo.getEarthDate());
             favorite.setUrl(photo.getImgSrc());
             favoritesList.add(favorite);

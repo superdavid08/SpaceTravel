@@ -46,6 +46,17 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/fragListing_tvCurrentSol"
+        android:paddingBottom="5dp"
+        android:gravity="center"
+        android:text="sol:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorSecondary4"/>
+
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"

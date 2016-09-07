@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Viaje Espacial SD8</string>
-    <string name="listingNavigationMenu_images">Fotos del Rover en Marte</string>
+    <string name="listingNavigationMenu_images">Fotos de Marte</string>
     <string name="listingNavigationMenu_apodToday">Imagen APOD del día</string>
     <string name="listingNavigationMenu_favorites">Favoritos</string>
+    <string name="listingNavigationMenu_configurations">Configuraciones</string>
     <string name="facebook_app_id">183000008784846</string>
     <string name="fragments_msgShare">Compartir</string>
     <string name="fragments_msgAlreadyExist">El elemento ya existe en la lista de favoritos</string>
@@ -15,13 +16,16 @@
     <string name="fragments_msgQuestionDelete" formatted="false">Deseas eliminar la imagen \"%s\" de tu lista de favoritos?</string>
     <string name="fragApod_btnSelectDate">Selecciona otra fecha</string>
     <string name="fragApod_msgSelectDate">Selecciona una fecha</string>
+    <string name="fragApod_msgNoInformation">No hay información para la fecha seleccionada</string>
     <string name="fragListing_btnNextPage">Siguiente</string>
     <string name="fragListing_btnPreviousPage">Anterior</string>
-    <string name="fragListing_tvEndOfListing" formatted="false">Fin del listado del Sol %s</string>
+    <string name="fragListing_tvEndOfListing" formatted="false">Fin del listado del sol %s</string>
+    <string name="fragListing_msgNoInformation">No hay información para este sol</string>
     <string name="detail_tvEarthDate">Fecha de la Tierra:</string>
     <string name="detail_tvCameraName">Nombre:</string>
     <string name="detail_tvCameraFullName">Nombre completo:</string>
     <string name="detail_tvCameraTitle">Cámara</string>
+    <string name="detail_tvRoverTitle">Vehículo</string>
     <string name="detail_tvRoverName">Nombre:</string>
     <string name="detail_tvRoverLandingDate">Aterrizaje:</string>
     <string name="detail_tvRoverMaxSol">Máx Sol:</string>
@@ -31,5 +35,13 @@
     <string name="FB_msgLogin">Iniciar sesión</string>
     <string name="FB_msgCancelLogin">Inicio cancelado</string>
     <string name="connectionRequired">Se necesita conexión a internet para acceder los datos del servicio web</string>
-    <string name="fragApod_msgNoInformation">No hay información por la fecha seleccionada</string>
+    <string name="fragConfig_msgChangeSol">Cambiar el parámetro: sol</string>
+    <string name="fragConfig_msgCurrentValue">Valor actual:</string>
+    <string name="fragConfig_chkRandom">Número aleatorio</string>
+    <string name="fragConfig_msgNewValue">Nuevo valor:</string>
+    <string name="fragConfig_btnApply">Aplicar</string>
+    <string name="fragConfig_msgRandom">Número aleatorio entre 1 y 1388</string>
+    <string name="fragConfig_msgRequired">Nuevo valor es requerido</string>
+    <string name="fragConfig_msgRange">el nuevo valor debe ser un número entre 1 y 1388</string>
+    <string name="fragConfig_msgSaved">Cambios aplicados</string>
 </resources>

@@ -34,12 +34,14 @@ import elsuper.david.com.spacetravel.data.Data;
 import elsuper.david.com.spacetravel.model.CameraSecondary;
 import elsuper.david.com.spacetravel.model.MarsRoverResponse;
 import elsuper.david.com.spacetravel.model.Photo;
+import elsuper.david.com.spacetravel.model.Preference;
 import elsuper.david.com.spacetravel.sql.CameraDataSource;
 import elsuper.david.com.spacetravel.sql.CameraSecondaryDataSource;
 import elsuper.david.com.spacetravel.sql.PhotoDataSource;
 import elsuper.david.com.spacetravel.sql.RoverDataSource;
 import elsuper.david.com.spacetravel.ui.view.apod.list.adapter.NasaApodAdapter;
 import elsuper.david.com.spacetravel.util.ConnectionUtil;
+import elsuper.david.com.spacetravel.util.PreferenceUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,6 +56,7 @@ public class FragmentListing extends Fragment{
     @BindView(R.id.fragListing_btnNextPage) Button btnNextPage;
     @BindView(R.id.fragListing_btnPreviousPage) Button btnPreviousPage;
     @BindView(R.id.fragListing_tvNumPage) TextView tvNumPage;
+    @BindView(R.id.fragListing_tvCurrentSol) TextView tvCurrentSol;
 
     //Adaptador
     private final NasaApodAdapter nasaApodAdapter = new NasaApodAdapter();
@@ -68,12 +71,16 @@ public class FragmentListing extends Fragment{
     private CameraSecondaryDataSource cameraSecondaryDataSource;
     //Número máximo "sol" al 26/08/2016
     private static final int solNumberMax = 1388;
-    //Esta variable tomará un valor aleatorio entre 1 y 1388 (solNumberMax)
+    //Esta variable tomará un valor aleatorio entre 1 y 1388 (solNumberMax), o el que esté en Preferencias
     private int solNumber;
     //Contador de páginas
     private int numPage = 1;
     //Para validar la conexión a internet
-    private ConnectionUtil connection;
+    private ConnectionUtil connectionUtil;
+    //Para guardar o leer el parámetro "sol" de las preferencias
+    private PreferenceUtil preferenceUtil;
+    //Bandera que indicadora de falta de datos
+    private Boolean noData = false;
 
 
     @Nullable
@@ -90,7 +97,9 @@ public class FragmentListing extends Fragment{
         roverDataSource = new RoverDataSource(getActivity());
         cameraSecondaryDataSource = new CameraSecondaryDataSource(getActivity());
         //Creamos la instancia para validar la conexión
-        connection = new ConnectionUtil(getActivity());
+        connectionUtil = new ConnectionUtil(getActivity());
+        //Instanciamos el objeto de las preferencias
+        preferenceUtil = new PreferenceUtil(getActivity());
 
         return view;
     }
@@ -105,10 +114,20 @@ public class FragmentListing extends Fragment{
             btnPreviousPage.setText("");
         }
 
-        //Generamos un número aleatorio entre 1 y solNumberMax para que sea el solNumber
-        Random random = new Random();
-        solNumber = (int)(random.nextDouble() * (solNumberMax +1));
-        if(solNumberMax == 0) solNumber = 1;
+        /**************************************************************************/
+        /* Establecemos el parámetro sol, tomado de preferencias o aleatoriamente */
+        /**************************************************************************/
+        Preference preference = preferenceUtil.getPreference();
+        if(preference != null)
+            solNumber = preference.getNumSol();
+        else {
+            //Generamos un número aleatorio entre 1 y solNumberMax para que sea el solNumber
+            Random random = new Random();
+            solNumber = (int) (random.nextDouble() * (solNumberMax + 1));
+            if (solNumberMax == 0) solNumber = 1;
+        }
+        tvCurrentSol.setText(tvCurrentSol.getText().toString() + " " + String.valueOf(solNumber));
+        /**************************************************************************/
 
         //Establecemos el layout en que se mostrará nuestro listado
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -194,10 +213,18 @@ public class FragmentListing extends Fragment{
                 .enqueue(new Callback<MarsRoverResponse>() {
             @Override
             public void onResponse(Call<MarsRoverResponse> call, Response<MarsRoverResponse> response) {
-                if(response != null && response.body().getPhotos().size() > 0) {
+                //Validando posibles respuestas del webservice
+                if(response == null || response.code() == 500 || response.code() == 400 || response.body() == null) {
+                    Toast.makeText(getActivity(),getString(R.string.fragListing_msgNoInformation), Toast.LENGTH_LONG).show();
+                    noData = true;
+                    return;
+                }
+
+                if(response.body().getPhotos().size() > 0) {
                     //Seteamos el listado de fotos en el adaptador
                     nasaApodAdapter.setMarsPhotos(response.body().getPhotos());
                     marsRoverListingRecycler.setAdapter(nasaApodAdapter);
+                    noData = false;
                 }
                 else{
                     Snackbar.make(getActivity().findViewById(android.R.id.content),
@@ -227,8 +254,8 @@ public class FragmentListing extends Fragment{
             return;
         }
 
-        if(!connection.isConnected()){
-            Toast.makeText(getActivity(),getString(R.string.connectionRequired), Toast.LENGTH_LONG).show();
+        //Si no hay datos el botón no tiene funcionalidad
+        if(noData){
             return;
         }
 
@@ -253,6 +280,11 @@ public class FragmentListing extends Fragment{
             return;
         }
 
+        //Si no hay datos el botón no tiene funcionalidad
+        if(noData){
+            return;
+        }
+
         //Se muestra la página prevía
         numPage--;
         tvNumPage.setText(String.valueOf(numPage));
@@ -271,7 +303,7 @@ public class FragmentListing extends Fragment{
     //endregion
 
     public Boolean isConnected(){
-        if(!connection.isConnected()){
+        if(!connectionUtil.isConnected()){
             Toast.makeText(getActivity(),getString(R.string.connectionRequired), Toast.LENGTH_LONG).show();
             return false;
         }

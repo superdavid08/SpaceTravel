@@ -15,5 +15,10 @@
             android:checkable="false"
             android:icon="@android:drawable/btn_star_big_on"
             android:title="@string/listingNavigationMenu_favorites" />
+
+        <item android:id="@+id/navigation_configurations"
+            android:checkable="false"
+            android:icon="@android:drawable/ic_menu_preferences"
+            android:title="@string/listingNavigationMenu_configurations" />
     </group>
 </menu>
